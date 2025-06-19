@@ -6,7 +6,7 @@ import HeroSection from './pages/HeroSection';
 function App() {
   return (
     <Routes>
-      <Route path="/" component={HeroSection} />
+      <Route path="/" element={<HeroSection />} />
     </Routes>
   );
 }

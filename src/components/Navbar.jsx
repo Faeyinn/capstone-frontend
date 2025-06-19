@@ -1,6 +1,6 @@
 function Navbar() {
     return (
-        <div className="navbar bg-primary shadow-sm">
+        <div className="navbar bg-primary shadow-sm sticky top-0 z-50 transition-all duration-300">
             <div className="navbar-start">
                 <div className="dropdown">
                     <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">

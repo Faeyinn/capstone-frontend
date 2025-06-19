@@ -12,7 +12,7 @@ const SearchBar = ({ onSearch }) => {
   };
 
   return (
-    <div className="bg-white p-4 rounded-xl shadow-md w-full max-w-5xl mx-auto">
+    <div className="bg-white p-4 rounded-xl shadow-md w-full max-w-5xl mx-auto text-black">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         {/* Input Keyword */}
         <input

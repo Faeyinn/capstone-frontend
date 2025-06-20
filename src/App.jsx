@@ -1,12 +1,12 @@
 import './index.css'
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import HeroSection from './pages/HeroSection';
+import Beranda from './pages/Beranda.jsx';
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<HeroSection />} />
+      <Route path="/" element={<Beranda />} />
     </Routes>
   );
 }

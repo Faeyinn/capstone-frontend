@@ -9,9 +9,19 @@ function Navbar() {
                     <ul
                         tabIndex={0}
                         className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-                        <li><a>Homepage</a></li>
-                        <li><a>Portfolio</a></li>
-                        <li><a>About</a></li>
+                        <li><a href="/">Beranda</a></li>
+                        <li><a href="#">Cari Beasiswa</a></li>
+                        <li>
+                            <a>Kategori</a>
+                            <ul className="p-2">
+                                <li><a>Dalam Negeri</a></li>
+                                <li><a>Luar Negeri</a></li>
+                                <li><a>Fully Funded</a></li>
+                                {/* Add more categories as needed */}
+                            </ul>
+                        </li>
+                        <li><a>Tips & Artikel</a></li>
+                        <li><a>Login / Daftar</a></li>
                     </ul>
                 </div>
             </div>
@@ -33,4 +43,4 @@ function Navbar() {
     )
 }
 
-export default Navbar
+export default Navbar;

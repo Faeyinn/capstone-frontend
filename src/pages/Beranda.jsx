@@ -172,7 +172,7 @@ function Beranda() {
             </div>
 
             {/* Highlight Beasiswa Unggulan Section */}
-            <div className="bg-base-100 py-12 px-6">
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-100 py-12 px-6">
                 <div className="max-w-7xl mx-auto">
                     <h2 className="text-4xl font-bold text-center mb-8 text-primary">
                         Highlight Beasiswa Unggulan
@@ -234,13 +234,53 @@ function Beranda() {
                 </div>
             </div>
 
-            <div className="bg-base-100 p-6">
-                <h2 className="text-3xl font-bold text-center mb-4">Join Our Community</h2>
-                <p className="text-center mb-6">Sign up to connect with mentors, access resources, and enhance your academic journey.</p>
-                <div className="flex justify-center">
-                    <button className="btn btn-secondary">Sign Up Now</button>
+            {/* Testimonial Carousel Section */}
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-100 py-16 px-6">
+                <div className="max-w-4xl mx-auto text-center">
+                    <h2 className="text-4xl font-bold text-gray-800 mb-4">Kata Mereka Tentang ScholarMatch</h2>
+                    <p className="text-gray-600 mb-10">Dengar langsung dari para penerima beasiswa yang sukses melalui platform kami.</p>
+
+                    <div className="carousel w-full rounded-box shadow-xl bg-white p-8 relative">
+                        {testimoni.map((item, index) => (
+                            <div
+                                key={item.id}
+                                id={`slide${index + 1}`}
+                                className={`carousel-item flex flex-col items-center justify-center w-full ${index === currentTestimoni ? '' : 'hidden'}`}
+                            >
+                                <div className="avatar mb-6">
+                                    <div className="w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                                        <img src={item.foto} alt={`${item.nama}'s photo`} />
+                                    </div>
+                                </div>
+                                <h3 className="text-2xl font-semibold text-gray-800 mb-2">{item.nama}</h3>
+                                <p className="text-lg text-blue-600 font-medium mb-1">{item.beasiswa} | {item.tahun}</p>
+                                <p className="text-gray-700 text-md mb-4">{item.universitas} - {item.jurusan}</p>
+                                <p className="text-gray-600 italic leading-relaxed max-w-prose">"{item.cerita}"</p>
+                            </div>
+                        ))}
+
+                        {/* Carousel Navigation Buttons */}
+                        <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
+                            <button onClick={prevTestimoni} className="btn btn-circle bg-primary text-white hover:bg-blue-700">❮</button>
+                            <button onClick={nextTestimoni} className="btn btn-circle bg-primary text-white hover:bg-blue-700">❯</button>
+                        </div>
+                    </div>
+                    {/* Carousel Dots */}
+                    <div className="flex justify-center w-full py-2 gap-2">
+                        {testimoni.map((_, index) => (
+                            <a
+                                key={index}
+                                href={`#slide${index + 1}`}
+                                onClick={() => goToTestimoni(index)}
+                                className={`btn btn-xs ${index === currentTestimoni ? 'btn-primary' : 'btn-base-200'}`}
+                            >
+                                {index + 1}
+                            </a>
+                        ))}
+                    </div>
                 </div>
             </div>
+
             <Footer />
         </>
     );

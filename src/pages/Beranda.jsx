@@ -50,8 +50,8 @@ function Beranda() {
             beasiswa: "Beasiswa Garuda",
             universitas: "Andalas University",
             jurusan: "Computer Engineering",
-            foto: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
-            cerita: "ScholarMatch membantu saya menemukan beasiswa impian ke Oxford. Platform ini sangat user-friendly dan informasinya lengkap. Sekarang saya sedang menyelesaikan Master di bidang Public Policy.",
+            foto: "https://iili.io/FxVRmCb.jpg",
+            cerita: "ScholarMatch membantu saya menemukan beasiswa impian ke Oxford. Platform ini sangat user-friendly dan informasinya lengkap.",
             tahun: "2024"
         },
         {
@@ -60,8 +60,8 @@ function Beranda() {
             beasiswa: "Beasiswa SmartPath",
             universitas: "Andalas University",
             jurusan: "Computer Engineering",
-            foto: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
-            cerita: "Berkat ScholarMatch, saya berhasil mendapatkan beasiswa Fulbright untuk PhD di Stanford. Fitur notifikasi deadline sangat membantu saya tidak melewatkan kesempatan emas ini.",
+            foto: "https://iili.io/FxVhKCl.jpg",
+            cerita: "Berkat ScholarMatch, saya berhasil mendapatkan beasiswa SmartPath. Fitur notifikasi deadline sangat membantu saya tidak melewatkan kesempatan emas.",
             tahun: "2023"
         },
         {
@@ -70,8 +70,8 @@ function Beranda() {
             beasiswa: "Kampung Inggris Beasiswa",
             universitas: "Andalas University",
             jurusan: "Computer Engineering",
-            foto: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=150&h=150&fit=crop&crop=face",
-            cerita: "Platform ini benar-benar game changer! Saya bisa filter beasiswa sesuai minat saya di bidang lingkungan. Sekarang saya study di Melbourne dan sangat bersyukur.",
+            foto: "https://iili.io/FxVh3Q4.jpg",
+            cerita: "Platform ini benar-benar game changer! Saya bisa filter beasiswa sesuai minat saya di bidang teknologi. Sekarang saya study di Unand dan sangat bersyukur.",
             tahun: "2024"
         },
     ];

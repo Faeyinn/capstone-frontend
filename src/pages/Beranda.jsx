@@ -2,6 +2,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Unand from '../assets/Unand.jpg';
 import SearchBar from '../components/SearchBar';
+import { useState } from 'react';
 
 function Beranda() {
     const handleSearch = (filters) => {
@@ -13,25 +14,66 @@ function Beranda() {
     const beasiswaUnggulan = [
         {
             id: 1,
-            nama: "Beasiswa LPDP",
+            nama: "Beasiswa Garuda",
             institusi: "Lembaga Pengelola Dana Pendidikan",
             deadline: "31 Desember 2025",
             jenjang: "S2/S3",
         },
         {
             id: 2,
-            nama: "Beasiswa Chevening",
-            institusi: "British Council",
+            nama: "Kampung Inggris Beasiswa",
+            institusi: "Central Course",
             deadline: "5 November 2025",
-            jenjang: "S2",
+            jenjang: "S1",
         },
         {
             id: 3,
-            nama: "Beasiswa Australia Awards",
-            institusi: "Australian Government",
-            deadline: "30 April 2025",
-            jenjang: "S2/S3",
+            nama: "Beasiswa SmartPath",
+            institusi: "SmartPath",
+            deadline: "30 November 2025",
+            jenjang: "S1",
         }
+    ];
+
+    // Data statistik
+    const statistik = {
+        totalBeasiswa: 1247,
+        totalPengguna: 15340,
+        beasiswaBaru: 23
+    };
+
+    // Data testimoni
+    const testimoni = [
+        {
+            id: 1,
+            nama: "Hanaviz",
+            beasiswa: "Beasiswa Garuda",
+            universitas: "Andalas University",
+            jurusan: "Computer Engineering",
+            foto: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
+            cerita: "ScholarMatch membantu saya menemukan beasiswa impian ke Oxford. Platform ini sangat user-friendly dan informasinya lengkap. Sekarang saya sedang menyelesaikan Master di bidang Public Policy.",
+            tahun: "2024"
+        },
+        {
+            id: 2,
+            nama: "Bima Setia Pratama",
+            beasiswa: "Beasiswa SmartPath",
+            universitas: "Andalas University",
+            jurusan: "Computer Engineering",
+            foto: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
+            cerita: "Berkat ScholarMatch, saya berhasil mendapatkan beasiswa Fulbright untuk PhD di Stanford. Fitur notifikasi deadline sangat membantu saya tidak melewatkan kesempatan emas ini.",
+            tahun: "2023"
+        },
+        {
+            id: 3,
+            nama: "Andi Tri Akira",
+            beasiswa: "Kampung Inggris Beasiswa",
+            universitas: "Andalas University",
+            jurusan: "Computer Engineering",
+            foto: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=150&h=150&fit=crop&crop=face",
+            cerita: "Platform ini benar-benar game changer! Saya bisa filter beasiswa sesuai minat saya di bidang lingkungan. Sekarang saya study di Melbourne dan sangat bersyukur.",
+            tahun: "2024"
+        },
     ];
 
     const handleDetailClick = (beasiswa) => {
@@ -39,9 +81,25 @@ function Beranda() {
         // Implement navigation to detail page
     };
 
+    // State untuk carousel testimoni
+    const [currentTestimoni, setCurrentTestimoni] = useState(0);
+
+    const nextTestimoni = () => {
+        setCurrentTestimoni((prev) => (prev + 1) % testimoni.length);
+    };
+
+    const prevTestimoni = () => {
+        setCurrentTestimoni((prev) => (prev - 1 + testimoni.length) % testimoni.length);
+    };
+
+    const goToTestimoni = (index) => {
+        setCurrentTestimoni(index);
+    };
+
     return (
         <>
             <Navbar />
+
             <div className="hero min-h-screen relative">
                 <img src={Unand} alt="Ilustrasi Mahasiswa Berprestasi" className="w-full h-full object-cover absolute inset-0 opacity-50" />
                 <div className="hero-overlay bg-black bg-opacity-60"></div>
@@ -56,6 +114,59 @@ function Beranda() {
                     </div>
                     <div className="pb-10 w-full">
                         <SearchBar onSearch={handleSearch} />
+                    </div>
+                </div>
+            </div>
+
+            {/* Statistik Singkat Section */}
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-100 py-16 px-6">
+                <div className="max-w-6xl mx-auto">
+                    <h2 className="text-4xl font-bold text-center mb-4 text-gray-800">
+                        ScholarMatch dalam Angka
+                    </h2>
+                    <p className="text-center text-gray-600 mb-12">
+                        Bergabunglah dengan ribuan mahasiswa yang telah meraih beasiswa impian mereka
+                    </p>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div className="bg-white rounded-2xl shadow-lg p-8 text-center hover:shadow-xl transition-shadow duration-300">
+                            <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <svg className="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                            </div>
+                            <h3 className="text-4xl font-bold text-blue-600 mb-2">
+                                {statistik.totalBeasiswa.toLocaleString()}
+                            </h3>
+                            <p className="text-gray-600 font-medium">Beasiswa Aktif</p>
+                            <p className="text-sm text-gray-500 mt-2">Dari berbagai institusi terpercaya</p>
+                        </div>
+                        
+                        <div className="bg-white rounded-2xl shadow-lg p-8 text-center hover:shadow-xl transition-shadow duration-300">
+                            <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <svg className="w-8 h-8 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"/>
+                                </svg>
+                            </div>
+                            <h3 className="text-4xl font-bold text-green-600 mb-2">
+                                {statistik.totalPengguna.toLocaleString()}
+                            </h3>
+                            <p className="text-gray-600 font-medium">Pengguna Terdaftar</p>
+                            <p className="text-sm text-gray-500 mt-2">Mahasiswa dari seluruh Indonesia</p>
+                        </div>
+                        
+                        <div className="bg-white rounded-2xl shadow-lg p-8 text-center hover:shadow-xl transition-shadow duration-300">
+                            <div className="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <svg className="w-8 h-8 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd"/>
+                                </svg>
+                            </div>
+                            <h3 className="text-4xl font-bold text-purple-600 mb-2">
+                                {statistik.beasiswaBaru}
+                            </h3>
+                            <p className="text-gray-600 font-medium">Beasiswa Baru</p>
+                            <p className="text-sm text-gray-500 mt-2">Ditambahkan minggu ini</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -123,7 +234,13 @@ function Beranda() {
                 </div>
             </div>
 
-            {/* Footer Section */}
+            <div className="bg-base-100 p-6">
+                <h2 className="text-3xl font-bold text-center mb-4">Join Our Community</h2>
+                <p className="text-center mb-6">Sign up to connect with mentors, access resources, and enhance your academic journey.</p>
+                <div className="flex justify-center">
+                    <button className="btn btn-secondary">Sign Up Now</button>
+                </div>
+            </div>
             <Footer />
         </>
     );

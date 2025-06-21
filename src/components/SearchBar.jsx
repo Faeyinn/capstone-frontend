@@ -38,17 +38,6 @@ const SearchBar = ({ onSearch }) => {
             <option value="S3">S3</option>
           </select>
 
-          {/* Lokasi */}
-          <select
-            value={lokasi}
-            onChange={(e) => setLokasi(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-          >
-            <option value="">Pilih Lokasi</option>
-            <option value="Indonesia">Indonesia</option>
-            <option value="Luar Negeri">Luar Negeri</option>
-          </select>
-
           {/* Deadline */}
           <select
             value={deadline}
@@ -68,8 +57,8 @@ const SearchBar = ({ onSearch }) => {
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
           >
             <option value="">Bidang Studi</option>
-            <option value="Teknik">Teknik</option>
-            <option value="Sains">Sains</option>
+            <option value="Teknik">Teknologi</option>
+            <option value="Sains">Bahasa</option>
             <option value="Sosial">Sosial</option>
             <option value="Kedokteran">Kedokteran</option>
           </select>

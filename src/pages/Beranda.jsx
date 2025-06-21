@@ -225,7 +225,7 @@ function Beranda() {
                             </div>
                         ))}
                     </div>
-                    
+
                     <div className="text-center mt-10">
                         <button className="btn btn-outline btn-primary btn-lg">
                             Lihat Semua Beasiswa

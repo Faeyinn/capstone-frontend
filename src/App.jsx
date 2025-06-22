@@ -6,7 +6,6 @@ function App() {
     <div className="App">
       <Routes>
         <Route path="/" element={<Beranda />} />
-        {/* Tambahkan rute lain di sini jika diperlukan */}
       </Routes>
     </div>
   );

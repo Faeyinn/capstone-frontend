@@ -1,20 +1,16 @@
 import React from 'react';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import SearchBar from '../components/SearchBar';
 import { Link, useNavigate } from 'react-router-dom';
+import SearchBar from '../components/SearchBar'; // Keep SearchBar
 
 function Beranda() {
   const navigate = useNavigate();
 
   const handleSearch = (params) => {
-    // Arahkan ke halaman ScholarshipList dengan parameter pencarian
     const queryParams = new URLSearchParams(params).toString();
     navigate(`/scholarships?${queryParams}`);
   };
 
   const dummyHighlightScholarships = [
-    // Data ini akan diganti oleh data dari backend saat ScholarshipList diakses
     {
       id: 1,
       name: 'Beasiswa Unggulan Kemendikbud',
@@ -31,12 +27,10 @@ function Beranda() {
       description: 'Beasiswa magister dan doktor dalam negeri maupun luar negeri.',
       link: '#'
     },
-    // Tambahkan lebih banyak dummy data jika diperlukan
   ];
 
   return (
-    <div>
-      <Navbar />
+    <> {/* Use a React fragment as Navbar and Footer are now in App.jsx */}
       <div className="hero min-h-screen bg-base-200">
         <div className="hero-content text-center">
           <div className="max-w-md">
@@ -45,7 +39,7 @@ function Beranda() {
               Jelajahi berbagai beasiswa dari berbagai penyedia, baik dalam maupun luar negeri.
               Login untuk mengelola beasiswa Anda atau daftar untuk mulai mencari.
             </p>
-            <SearchBar onSearch={handleSearch} /> {/* Gunakan SearchBar di Beranda */}
+            <SearchBar onSearch={handleSearch} />
             <div className="mt-8">
               <Link to="/scholarships" className="btn btn-primary mr-4">Lihat Semua Beasiswa</Link>
             </div>
@@ -71,8 +65,7 @@ function Beranda() {
           ))}
         </div>
       </div>
-      <Footer />
-    </div>
+    </>
   );
 }
 

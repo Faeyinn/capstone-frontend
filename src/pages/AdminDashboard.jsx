@@ -1,226 +1,253 @@
-// src/pages/AdminDashboard.jsx
 import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { useNavigate } from 'react-router-dom';
+import { scholarshipApi } from '../services/api'; // Import scholarshipApi
+import { useAuth } from '../context/AuthContext'; // Import useAuth untuk isAdmin check
 
 function AdminDashboard() {
-    const navigate = useNavigate();
-    const [scholarships, setScholarships] = useState([]);
-    const [editingScholarship, setEditingScholarship] = useState(null); // State for editing
-    const [form, setForm] = useState({
-        id: '', // Used for update, but typically handled by backend on create
-        nama: '',
-        institusi: '',
-        deadline: '',
-        jenjang: '',
-        bidang: '',
-        deskripsi: ''
-    });
+  const { user, isAuthenticated, isAdmin } = useAuth();
+  const [scholarships, setScholarships] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-    // Dummy scholarships for admin view
-    const dummyAdminScholarships = [
-        {
-            id: 1,
-            nama: "Beasiswa Garuda",
-            institusi: "Lembaga Pengelola Dana Pendidikan",
-            deadline: "31 Desember 2025",
-            jenjang: "S2/S3",
-            bidang: "Umum",
-            deskripsi: "Deskripsi singkat Beasiswa Garuda."
-        },
-        {
-            id: 2,
-            nama: "Kampung Inggris Beasiswa",
-            institusi: "Central Course",
-            deadline: "5 November 2025",
-            jenjang: "S1",
-            bidang: "Bahasa",
-            deskripsi: "Deskripsi singkat Kampung Inggris Beasiswa."
-        },
-    ];
+  // State untuk form tambah/edit
+  const [isEditing, setIsEditing] = useState(false);
+  const [currentScholarship, setCurrentScholarship] = useState({
+    id: null,
+    name: '',
+    provider: '',
+    deadline: '',
+    link: ''
+  });
 
-    useEffect(() => {
-        // In a real application, fetch admin-specific data from API
-        // For now, use dummy data
-        setScholarships(dummyAdminScholarships);
-    }, []);
+  const fetchScholarships = async () => {
+    setLoading(true);
+    try {
+      const response = await scholarshipApi.getAll(); // Menggunakan API untuk admin juga
+      setScholarships(response.data);
+    } catch (err) {
+      setError('Failed to fetch scholarships for admin dashboard.');
+      console.error('Error fetching scholarships for admin:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    const handleFormChange = (e) => {
-        const { name, value } = e.target;
-        setForm(prev => ({ ...prev, [name]: value }));
-    };
+  useEffect(() => {
+    if (isAdmin) { // Hanya fetch jika user adalah admin
+      fetchScholarships();
+    }
+  }, [isAdmin]); // Dependensi pada isAdmin
 
-    const handleAddScholarship = (e) => {
-        e.preventDefault();
-        // In a real app, send a POST request to your backend to add the scholarship
-        const newId = scholarships.length > 0 ? Math.max(...scholarships.map(s => s.id)) + 1 : 1;
-        const newScholarship = { ...form, id: newId };
-        setScholarships(prev => [...prev, newScholarship]);
-        setForm({ id: '', nama: '', institusi: '', deadline: '', jenjang: '', bidang: '', deskripsi: '' });
-        alert('Beasiswa berhasil ditambahkan!');
-    };
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setCurrentScholarship({ ...currentScholarship, [name]: value });
+  };
 
-    const handleEditClick = (scholarship) => {
-        setEditingScholarship(scholarship.id);
-        setForm(scholarship); // Populate form with scholarship data for editing
-    };
+  const handleAddOrUpdateScholarship = async (e) => {
+    e.preventDefault();
+    setError(null);
 
-    const handleUpdateScholarship = (e) => {
-        e.preventDefault();
-        // In a real app, send a PUT request to your backend to update the scholarship
-        setScholarships(prev => prev.map(s => s.id === editingScholarship ? { ...form, id: editingScholarship } : s));
-        setEditingScholarship(null);
-        setForm({ id: '', nama: '', institusi: '', deadline: '', jenjang: '', bidang: '', deskripsi: '' });
-        alert('Beasiswa berhasil diupdate!');
-    };
-
-    const handleDeleteScholarship = (id) => {
-        // In a real app, send a DELETE request to your backend
-        if (window.confirm("Apakah Anda yakin ingin menghapus beasiswa ini?")) {
-            setScholarships(prev => prev.filter(s => s.id !== id));
-            alert('Beasiswa berhasil dihapus!');
-        }
-    };
-
-    // Simple authentication check (replace with actual auth logic)
-    const isAdminLoggedIn = true; // Placeholder: Replace with actual auth state
-
-    if (!isAdminLoggedIn) {
-        navigate('/login'); // Redirect to login if not authenticated
-        return null;
+    // Basic validation
+    if (!currentScholarship.name || !currentScholarship.provider || !currentScholarship.deadline || !currentScholarship.link) {
+      setError('All fields are required.');
+      return;
     }
 
+    try {
+      if (isEditing) {
+        await scholarshipApi.update(currentScholarship.id, currentScholarship);
+        alert('Scholarship updated successfully!');
+      } else {
+        await scholarshipApi.create(currentScholarship);
+        alert('Scholarship added successfully!');
+      }
+      fetchScholarships(); // Refresh list
+      // Reset form
+      setIsEditing(false);
+      setCurrentScholarship({ id: null, name: '', provider: '', deadline: '', link: '' });
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to save scholarship.');
+      console.error('Error saving scholarship:', err);
+    }
+  };
+
+  const handleEdit = (scholarship) => {
+    setIsEditing(true);
+    // Format deadline to 'YYYY-MM-DD' for input type='date'
+    const formattedDeadline = scholarship.deadline ? new Date(scholarship.deadline).toISOString().split('T')[0] : '';
+    setCurrentScholarship({ ...scholarship, deadline: formattedDeadline });
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to form
+  };
+
+  const handleDelete = async (id) => {
+    if (window.confirm('Are you sure you want to delete this scholarship?')) {
+      try {
+        await scholarshipApi.delete(id);
+        alert('Scholarship deleted successfully!');
+        fetchScholarships(); // Refresh list
+      } catch (err) {
+        setError(err.response?.data?.message || 'Failed to delete scholarship.');
+        console.error('Error deleting scholarship:', err);
+      }
+    }
+  };
+
+  if (!isAuthenticated || !isAdmin) {
     return (
-        <>
-            <Navbar />
-            <div className="container mx-auto bg-gradient-to-r from-blue-50 to-indigo-100 px-4 py-8">
-                <h1 className="text-4xl font-bold text-center mb-8 text-secondary">Admin Dashboard</h1>
-
-                {/* Form Add/Edit Scholarship */}
-                <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
-                    <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-                        {editingScholarship ? 'Edit Beasiswa' : 'Tambah Beasiswa Baru'}
-                    </h2>
-                    <form onSubmit={editingScholarship ? handleUpdateScholarship : handleAddScholarship} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <input
-                            type="text"
-                            name="nama"
-                            placeholder="Nama Beasiswa"
-                            value={form.nama}
-                            onChange={handleFormChange}
-                            className="input input-bordered w-full bg-white text-black shadow-sm border-gray-300"
-                            required
-                        />
-                        <input
-                            type="text"
-                            name="institusi"
-                            placeholder="Institusi"
-                            value={form.institusi}
-                            onChange={handleFormChange}
-                            className="input input-bordered w-full bg-white text-black shadow-sm border-gray-300"
-                            required
-                        />
-                        <input
-                            type="text"
-                            name="deadline"
-                            placeholder="Deadline (e.g., 31 Desember 2025)"
-                            value={form.deadline}
-                            onChange={handleFormChange}
-                            className="input input-bordered w-full bg-white text-black shadow-sm border-gray-300"
-                            required
-                        />
-                        <select
-                            name="jenjang"
-                            value={form.jenjang}
-                            onChange={handleFormChange}
-                            className="select select-bordered w-full bg-white text-black shadow-sm border-gray-300"
-                            required
-                        >
-                            <option value="">Pilih Jenjang</option>
-                            <option value="SMA">SMA</option>
-                            <option value="S1">S1</option>
-                            <option value="S2">S2</option>
-                            <option value="S3">S3</option>
-                        </select>
-                         <select
-                            name="bidang"
-                            value={form.bidang}
-                            onChange={handleFormChange}
-                            className="select select-bordered w-full bg-white text-black shadow-sm border-gray-300"
-                            required
-                        >
-                            <option value="">Pilih Bidang Studi</option>
-                            <option value="Teknik">Teknik</option>
-                            <option value="Sains">Sains</option>
-                            <option value="Sosial">Sosial</option>
-                            <option value="Kedokteran">Kedokteran</option>
-                            <option value="Bahasa">Bahasa</option>
-                            <option value="Umum">Umum</option>
-                            <option value="Multi-disiplin">Multi-disiplin</option>
-                        </select>
-                        <textarea
-                            name="deskripsi"
-                            placeholder="Deskripsi Beasiswa"
-                            value={form.deskripsi}
-                            onChange={handleFormChange}
-                            className="textarea textarea-bordered md:col-span-2 w-full bg-white text-black shadow-sm border-gray-300"
-                            rows="4"
-                            required
-                        ></textarea>
-                        <div className="md:col-span-2 text-right">
-                            <button type="submit" className="btn btn-success mr-2">
-                                {editingScholarship ? 'Update Beasiswa' : 'Tambah Beasiswa'}
-                            </button>
-                            {editingScholarship && (
-                                <button
-                                    type="button"
-                                    onClick={() => {
-                                        setEditingScholarship(null);
-                                        setForm({ id: '', nama: '', institusi: '', deadline: '', jenjang: '', bidang: '', deskripsi: '' });
-                                    }}
-                                    className="btn btn-error"
-                                >
-                                    Batal Edit
-                                </button>
-                            )}
-                        </div>
-                    </form>
-                </div>
-
-                {/* Scholarship List for Admin */}
-                <div className="overflow-x-auto bg-white rounded-xl shadow-lg p-8">
-                    <h2 className="text-2xl font-semibold text-gray-800 mb-4">Daftar Beasiswa (Admin)</h2>
-                    <table className="table w-full text-neutral text-base border-gray-200">
-                        <thead className="bg-gray-100 text-neutral">
-                            <tr>
-                                <th>Nama Beasiswa</th>
-                                <th>Institusi</th>
-                                <th>Deadline</th>
-                                <th>Jenjang</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {scholarships.map((scholarship) => (
-                                <tr key={scholarship.id}>
-                                    <td>{scholarship.nama}</td>
-                                    <td>{scholarship.institusi}</td>
-                                    <td>{scholarship.deadline}</td>
-                                    <td>{scholarship.jenjang}</td>
-                                    <td>
-                                        <button onClick={() => handleEditClick(scholarship)} className="btn btn-warning btn-sm mr-2">Edit</button>
-                                        <button onClick={() => handleDeleteScholarship(scholarship.id)} className="btn btn-error btn-sm">Delete</button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <Footer />
-        </>
+      <>
+        <Navbar />
+        <div className="container mx-auto p-4 text-center text-red-500">Access Denied. You must be an admin to view this page.</div>
+        <Footer />
+      </>
     );
+  }
+
+  if (loading) {
+    return (
+      <>
+        <Navbar />
+        <div className="container mx-auto p-4 text-center">Loading admin dashboard...</div>
+        <Footer />
+      </>
+    );
+  }
+
+  if (error) {
+    return (
+      <>
+        <Navbar />
+        <div className="container mx-auto p-4 text-center text-red-500">{error}</div>
+        <Footer />
+      </>
+    );
+  }
+
+  return (
+    <div>
+      <Navbar />
+      <div className="container mx-auto p-8">
+        <h1 className="text-3xl font-bold text-center mb-8">Admin Dashboard</h1>
+
+        {/* Form Tambah/Edit Beasiswa */}
+        <div className="bg-white p-6 rounded-lg shadow-md mb-8">
+          <h2 className="text-2xl font-bold mb-4">{isEditing ? 'Edit Beasiswa' : 'Tambah Beasiswa Baru'}</h2>
+          {error && <p className="text-red-500 mb-4">{error}</p>}
+          <form onSubmit={handleAddOrUpdateScholarship}>
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">Nama Beasiswa</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                value={currentScholarship.name}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="provider">Penyedia</label>
+              <input
+                type="text"
+                id="provider"
+                name="provider"
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                value={currentScholarship.provider}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="deadline">Deadline</label>
+              <input
+                type="date"
+                id="deadline"
+                name="deadline"
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                value={currentScholarship.deadline}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+            <div className="mb-6">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="link">Link Pendaftaran</label>
+              <input
+                type="url"
+                id="link"
+                name="link"
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                placeholder="https://example.com/apply"
+                value={currentScholarship.link}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+            <div className="flex items-center justify-between">
+              <button
+                type="submit"
+                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              >
+                {isEditing ? 'Update Beasiswa' : 'Tambah Beasiswa'}
+              </button>
+              {isEditing && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsEditing(false);
+                    setCurrentScholarship({ id: null, name: '', provider: '', deadline: '', link: '' });
+                    setError(null);
+                  }}
+                  className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                >
+                  Batal Edit
+                </button>
+              )}
+            </div>
+          </form>
+        </div>
+
+        {/* Tabel Daftar Beasiswa */}
+        <div className="overflow-x-auto bg-white p-6 rounded-lg shadow-md">
+          <h2 className="text-2xl font-bold mb-4">Daftar Semua Beasiswa</h2>
+          <table className="table w-full">
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>Nama Beasiswa</th>
+                <th>Penyedia</th>
+                <th>Deadline</th>
+                <th>Link</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              {scholarships.length > 0 ? (
+                scholarships.map((scholarship, index) => (
+                  <tr key={scholarship.id}>
+                    <td>{index + 1}</td>
+                    <td>{scholarship.name}</td>
+                    <td>{scholarship.provider}</td>
+                    <td>{new Date(scholarship.deadline).toLocaleDateString()}</td>
+                    <td><a href={scholarship.link} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">Link</a></td>
+                    <td>
+                      <button onClick={() => handleEdit(scholarship)} className="btn btn-sm btn-info mr-2">Edit</button>
+                      <button onClick={() => handleDelete(scholarship.id)} className="btn btn-sm btn-error">Delete</button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="6" className="text-center">No scholarships found.</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <Footer />
+    </div>
+  );
 }
 
 export default AdminDashboard;

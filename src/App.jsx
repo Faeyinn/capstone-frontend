@@ -8,6 +8,7 @@ import ScholarshipDetail from './pages/ScholarshipDetail.jsx';
 import AdminDashboard from './pages/AdminDashboard.jsx';
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
+import ProtectedRoute from './components/ProtectedRoute.jsx'; // Import ProtectedRoute
 
 function App() {
   return (
@@ -15,7 +16,12 @@ function App() {
       <Route path="/" element={<Beranda />} />
       <Route path="/scholarships" element={<ScholarshipList />} />
       <Route path="/scholarships/:id" element={<ScholarshipDetail />} />
-      <Route path="/admin" element={<AdminDashboard />} />
+      
+      {/* Protected Admin Route */}
+      <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
+        <Route path="/admin" element={<AdminDashboard />} />
+      </Route>
+
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
     </Routes>

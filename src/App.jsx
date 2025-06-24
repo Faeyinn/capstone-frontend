@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ListBeasiswa from './pages/ListBeasiswa';
+import DetailBeasiswa from './pages/DetailBeasiswa';
 
 function App() {
   return (
@@ -18,6 +19,9 @@ function App() {
       </Routes>
       <Routes>
         <Route path="/list-beasiswa" element={<ListBeasiswa />} />
+      </Routes>
+      <Routes>
+        <Route path="/detail-beasiswa/:id" element={<DetailBeasiswa />} />
       </Routes>
     </div>
   );

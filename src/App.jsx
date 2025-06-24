@@ -2,6 +2,7 @@ import Beranda from './pages/Beranda';
 import { Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import ListBeasiswa from './pages/ListBeasiswa';
 
 function App() {
   return (
@@ -14,6 +15,9 @@ function App() {
       </Routes>
       <Routes>
         <Route path="/register" element={<Register />} />
+      </Routes>
+      <Routes>
+        <Route path="/list-beasiswa" element={<ListBeasiswa />} />
       </Routes>
     </div>
   );

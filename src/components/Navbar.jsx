@@ -9,7 +9,7 @@ function Navbar() {
             <div className="flex-none">
                 <ul className="menu menu-horizontal px-1">
                     <li><Link to="/">Beranda</Link></li>
-                    <li><a>Beasiswa</a></li>
+                    <li><Link to="/list-beasiswa">Beasiswa</Link></li>
                     <li><Link to="/login">Login</Link></li>
                     <li><Link to="/register">Register</Link></li>
                 </ul>

@@ -15,21 +15,21 @@ function Register() {
             >
                 <div className="hero-overlay"></div>
                 <div className="hero-content text-neutral-content text-center">
-                    <div className="flex justify-center items-center bg-base-100 bg-opacity-80 rounded-lg p-8">
-                        <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
-                            <h2 className="text-xl font-bold mb-4 text-center">Register</h2>
+                    <div className="flex justify-center items-center bg-white bg-opacity-80 rounded-lg p-8">
+                        <fieldset className="fieldset bg-white shadow-xl rounded-box w-xs border p-4">
+                            <h2 className="text-xl font-bold mb-4 text-center text-primary">Register</h2>
 
-                            <label className="label">Email</label>
-                            <input type="email" className="input" placeholder="Email" />
+                            <label className="label text-black">Email</label>
+                            <input type="email" className="input bg-white text-black border-gray-400" placeholder="Email" />
 
-                            <label className="label">Password</label>
-                            <input type="password" className="input" placeholder="Password" />
+                            <label className="label text-black">Password</label>
+                            <input type="password" className="input bg-white text-black border-gray-400" placeholder="Password" />
 
-                            <label className="label">Confirm Password</label>
-                            <input type="password" className="input" placeholder="Password" />
+                            <label className="label text-black">Confirm Password</label>
+                            <input type="password" className="input bg-white text-black border-gray-400" placeholder="Password" />
 
                             <button className="btn btn-primary mt-4">Register</button>
-                            <p className="mt-4 text-sm">
+                            <p className="mt-4 text-sm text-black">
                                 Sudah punya akun? <Link to="/login" className="text-primary">Login disini</Link>
                             </p>
                         </fieldset>

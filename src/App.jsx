@@ -6,30 +6,28 @@ import ListBeasiswa from './pages/ListBeasiswa';
 import DetailBeasiswa from './pages/DetailBeasiswa';
 import BerandaAdmin from './pages/BerandaAdmin';
 import AdminDetailBeasiswa from './pages/AdminDetailBeasiswa';
+import PrivateRoute from './components/PrivateRoute'; // Import PrivateRoute
+import AdminRoute from './components/AdminRoute';     // Import AdminRoute
 
 function App() {
   return (
     <div className="App">
       <Routes>
         <Route path="/" element={<Beranda />} />
-      </Routes>
-      <Routes>
         <Route path="/login" element={<Login />} />
-      </Routes>
-      <Routes>
         <Route path="/register" element={<Register />} />
-      </Routes>
-      <Routes>
-        <Route path="/list-beasiswa" element={<ListBeasiswa />} />
-      </Routes>
-      <Routes>
-        <Route path="/detail-beasiswa/:id" element={<DetailBeasiswa />} />
-      </Routes>
-      <Routes>
-        <Route path="/beranda-admin" element={<BerandaAdmin />} />
-      </Routes>
-      <Routes>
-        <Route path="/admin-detail-beasiswa/:id" element={<AdminDetailBeasiswa />} />
+
+        {/* Rute yang hanya dapat diakses setelah user login */}
+        <Route element={<PrivateRoute />}> {/* Gunakan PrivateRoute di sini */}
+          <Route path="/list-beasiswa" element={<ListBeasiswa />} />
+          <Route path="/detail-beasiswa/:id" element={<DetailBeasiswa />} />
+        </Route>
+
+        {/* Rute yang hanya dapat diakses setelah admin login */}
+        <Route element={<AdminRoute />}> {/* Gunakan AdminRoute di sini */}
+          <Route path="/beranda-admin" element={<BerandaAdmin />} />
+          <Route path="/admin-detail-beasiswa/:id" element={<AdminDetailBeasiswa />} />
+        </Route>
       </Routes>
     </div>
   );

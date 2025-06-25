@@ -1,5 +1,6 @@
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { Link } from 'react-router-dom'
 
 function Beranda() {
   return (
@@ -19,7 +20,7 @@ function Beranda() {
             <p className="mb-5">
               ScholarMatch adalah paltform untuk mencari beasiswa yang mudah dan cepat. ScholarMatch membantu kamu menemukan beasiswa yang sesuai dengan kebutuhanmu.
             </p>
-            <button className="btn btn-primary">Get Started</button>
+            <Link to="/login" className="btn btn-primary">Get Started</Link>
           </div>
         </div>
       </div>

@@ -1,8 +1,21 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from '../context/AuthContext';
 
 function Login() {
+    const { login } = useAuth();
+    const navigate = useNavigate();
+
+    const handleLogin = (role) => {
+        login(role);
+        if (role === 'admin') {
+            navigate('/beranda-admin');
+        } else {
+            navigate('/list-beasiswa')
+        }
+    }
+
     return (
         <div>
             <Navbar />
@@ -25,7 +38,9 @@ function Login() {
                             <label className="label text-black">Password</label>
                             <input type="password" className="input bg-white text-black border-gray-400" placeholder="Password" />
 
-                            <button className="btn btn-primary mt-4">Login</button>
+                            <button className="btn btn-primary mt-4 w-full mb-2" onClick={() => handleLogin('user')}>Login as User</button>
+                            <button className="btn btn-secondary w-full" onClick={() => handleLogin('admin')}>Login as Admin</button>
+                            
                             <p className="mt-4 text-sm text-black">
                                 Belum punya akun? <Link to="/register" className="text-primary">Daftar disini</Link>
                             </p>

@@ -1,93 +1,33 @@
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { useAuth } from '../context/AuthContext'; // Import useAuth
+import { useState, useEffect } from 'react'; // Import useState dan useEffect
 
 function AdminDetailBeasiswa() {
     const { id } = useParams();
+    const navigate = useNavigate();
+    const { beasiswaList, editBeasiswa, deleteBeasiswa } = useAuth(); // Ambil beasiswaList, editBeasiswa, deleteBeasiswa dari context
 
-    // Data dummy - dalam aplikasi nyata, fetch dari API berdasarkan ID
-    const beasiswaData = {
-        1: {
-            id: 1,
-            nama: "Beasiswa SmartPath",
-            jenjang: "S1",
-            deadline: "25 Desember 2025",
-            deskripsi: "Beasiswa SmartPath adalah program beasiswa yang ditujukan untuk mahasiswa berprestasi yang memiliki potensi untuk menjadi pemimpin masa depan. Program ini menyediakan dukungan penuh untuk pendidikan tinggi.",
-            syarat: [
-                "IPK minimal 3.0",
-                "Aktif dalam organisasi kemahasiswaan",
-                "Surat rekomendasi dari dosen",
-                "Essay motivasi",
-                "Tidak sedang menerima beasiswa lain"
-            ],
-            benefit: [
-                "Biaya kuliah penuh selama 4 tahun",
-                "Uang saku bulanan Rp 2.000.000",
-                "Laptop dan peralatan study",
-                "Program mentoring",
-                "Kesempatan magang di perusahaan partner"
-            ],
-            dokumen: [
-                "Fotokopi KTP",
-                "Transkrip nilai terbaru",
-                "Surat keterangan tidak mampu",
-                "Essay motivasi (max 500 kata)",
-                "Surat rekomendasi dari dosen"
-            ]
-        },
-        2: {
-            id: 2,
-            nama: "Beasiswa Excellence",
-            jenjang: "S1",
-            deadline: "30 Januari 2026",
-            deskripsi: "Program beasiswa unggulan untuk mahasiswa dengan prestasi akademik tinggi dan potensi kepemimpinan yang kuat.",
-            syarat: [
-                "IPK minimal 3.5",
-                "Prestasi akademik atau non-akademik",
-                "Essay motivasi",
-                "Interview online"
-            ],
-            benefit: [
-                "Biaya kuliah penuh",
-                "Tunjangan hidup bulanan",
-                "Pelatihan soft skills",
-                "Sertifikasi internasional"
-            ],
-            dokumen: [
-                "Fotokopi KTP",
-                "Transkrip nilai",
-                "Sertifikat prestasi",
-                "Essay motivasi"
-            ]
-        },
-        3: {
-            id: 3,
-            nama: "Beasiswa Future Leaders",
-            jenjang: "S1",
-            deadline: "15 Februari 2026",
-            deskripsi: "Beasiswa untuk calon pemimpin masa depan dengan fokus pada pengembangan karakter dan kemampuan kepemimpinan.",
-            syarat: [
-                "Pengalaman kepemimpinan",
-                "Aktif dalam kegiatan sosial",
-                "Interview dan assessment",
-                "Komitmen program mentoring"
-            ],
-            benefit: [
-                "Full scholarship",
-                "Program mentoring eksklusif",
-                "Networking dengan alumni",
-                "Leadership development program"
-            ],
-            dokumen: [
-                "CV lengkap",
-                "Portfolio kepemimpinan",
-                "Surat rekomendasi",
-                "Video presentasi"
-            ]
+    const beasiswa = beasiswaList.find(b => b.id === parseInt(id)); // Cari beasiswa berdasarkan ID
+
+    const [isEditing, setIsEditing] = useState(false);
+    const [formData, setFormData] = useState({});
+
+    useEffect(() => {
+        if (beasiswa) {
+            setFormData({
+                id: beasiswa.id,
+                nama: beasiswa.nama,
+                jenjang: beasiswa.jenjang,
+                deadline: beasiswa.deadline,
+                deskripsi: beasiswa.deskripsi,
+                syarat: beasiswa.syarat.join(', '), // Ubah array menjadi string untuk input
+                benefit: beasiswa.benefit.join(', '),
+                dokumen: beasiswa.dokumen.join(', ')
+            });
         }
-    };
-
-    const beasiswa = beasiswaData[id];
+    }, [beasiswa]);
 
     if (!beasiswa) {
         return (
@@ -96,13 +36,45 @@ function AdminDetailBeasiswa() {
                 <div className="container mx-auto px-4 py-8">
                     <div className="text-center">
                         <h1 className="text-4xl font-bold mb-4">Beasiswa Tidak Ditemukan</h1>
-                        <Link to="/" className="btn btn-primary">Kembali ke Daftar Beasiswa</Link>
+                        <Link to="/beranda-admin" className="btn btn-primary">Kembali ke Beranda Admin</Link>
                     </div>
                 </div>
                 <Footer />
             </div>
         );
     }
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prevData => ({
+            ...prevData,
+            [name]: value
+        }));
+    };
+
+    const handleSave = () => {
+        const updatedBeasiswa = {
+            id: formData.id,
+            nama: formData.nama,
+            jenjang: formData.jenjang,
+            deadline: formData.deadline,
+            deskripsi: formData.deskripsi,
+            syarat: formData.syarat.split(',').map(item => item.trim()),
+            benefit: formData.benefit.split(',').map(item => item.trim()),
+            dokumen: formData.dokumen.split(',').map(item => item.trim())
+        };
+        editBeasiswa(updatedBeasiswa);
+        setIsEditing(false);
+        alert('Beasiswa berhasil diupdate!');
+    };
+
+    const handleDelete = () => {
+        if (window.confirm(`Apakah Anda yakin ingin menghapus beasiswa ${beasiswa.nama}?`)) {
+            deleteBeasiswa(beasiswa.id);
+            alert('Beasiswa berhasil dihapus!');
+            navigate('/beranda-admin'); // Kembali ke beranda admin setelah dihapus
+        }
+    };
 
     return (
         <div>
@@ -126,50 +98,80 @@ function AdminDetailBeasiswa() {
                                 <div className="lg:col-span-2">
                                     <div className="card bg-primary shadow-xl">
                                         <div className="card-body">
-                                            <h1 className="card-title text-3xl mb-4">{beasiswa.nama}</h1>
+                                            {isEditing ? (
+                                                <form>
+                                                    <label className="label text-black">Nama Beasiswa</label>
+                                                    <input type="text" name="nama" className="input bg-white text-black border-gray-400 w-full mb-4" value={formData.nama} onChange={handleInputChange} />
 
-                                            <div className="grid grid-cols-2 gap-4 mb-6">
-                                                <div>
-                                                    <span className="font-semibold">Jenjang:</span>
-                                                    <span className="ml-2">{beasiswa.jenjang}</span>
-                                                </div>
-                                                <div>
-                                                    <span className="font-semibold">Deadline:</span>
-                                                    <span className="ml-2">{beasiswa.deadline}</span>
-                                                </div>
-                                            </div>
+                                                    <label className="label text-black">Jenjang</label>
+                                                    <input type="text" name="jenjang" className="input bg-white text-black border-gray-400 w-full mb-4" value={formData.jenjang} onChange={handleInputChange} />
 
-                                            <div className="mb-6">
-                                                <h2 className="text-2xl font-bold mb-3">Deskripsi</h2>
-                                                <p className="leading-relaxed">{beasiswa.deskripsi}</p>
-                                            </div>
+                                                    <label className="label text-black">Deadline</label>
+                                                    <input type="text" name="deadline" className="input bg-white text-black border-gray-400 w-full mb-4" value={formData.deadline} onChange={handleInputChange} />
 
-                                            <div className="mb-6">
-                                                <h2 className="text-2xl font-bold mb-3">Persyaratan</h2>
-                                                <ul className="list-disc list-inside space-y-2">
-                                                    {beasiswa.syarat.map((item, index) => (
-                                                        <li key={index}>{item}</li>
-                                                    ))}
-                                                </ul>
-                                            </div>
+                                                    <label className="label text-black">Deskripsi</label>
+                                                    <textarea name="deskripsi" className="textarea bg-white text-black border-gray-400 w-full mb-4" value={formData.deskripsi} onChange={handleInputChange}></textarea>
 
-                                            <div className="mb-6">
-                                                <h2 className="text-2xl font-bold mb-3">Manfaat</h2>
-                                                <ul className="list-disc list-inside space-y-2">
-                                                    {beasiswa.benefit.map((item, index) => (
-                                                        <li key={index}>{item}</li>
-                                                    ))}
-                                                </ul>
-                                            </div>
+                                                    <label className="label text-black">Persyaratan (pisahkan dengan koma)</label>
+                                                    <textarea name="syarat" className="textarea bg-white text-black border-gray-400 w-full mb-4" value={formData.syarat} onChange={handleInputChange}></textarea>
 
-                                            <div className="mb-6">
-                                                <h2 className="text-2xl font-bold mb-3">Dokumen yang Diperlukan</h2>
-                                                <ul className="list-disc list-inside space-y-2">
-                                                    {beasiswa.dokumen.map((item, index) => (
-                                                        <li key={index}>{item}</li>
-                                                    ))}
-                                                </ul>
-                                            </div>
+                                                    <label className="label text-black">Manfaat (pisahkan dengan koma)</label>
+                                                    <textarea name="benefit" className="textarea bg-white text-black border-gray-400 w-full mb-4" value={formData.benefit} onChange={handleInputChange}></textarea>
+
+                                                    <label className="label text-black">Dokumen yang Diperlukan (pisahkan dengan koma)</label>
+                                                    <textarea name="dokumen" className="textarea bg-white text-black border-gray-400 w-full mb-4" value={formData.dokumen} onChange={handleInputChange}></textarea>
+
+                                                    <button type="button" className="btn btn-success mr-2" onClick={handleSave}>Simpan</button>
+                                                    <button type="button" className="btn btn-ghost" onClick={() => setIsEditing(false)}>Batal</button>
+                                                </form>
+                                            ) : (
+                                                <>
+                                                    <h1 className="card-title text-3xl mb-4">{beasiswa.nama}</h1>
+
+                                                    <div className="grid grid-cols-2 gap-4 mb-6">
+                                                        <div>
+                                                            <span className="font-semibold">Jenjang:</span>
+                                                            <span className="ml-2">{beasiswa.jenjang}</span>
+                                                        </div>
+                                                        <div>
+                                                            <span className="font-semibold">Deadline:</span>
+                                                            <span className="ml-2">{beasiswa.deadline}</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="mb-6">
+                                                        <h2 className="text-2xl font-bold mb-3">Deskripsi</h2>
+                                                        <p className="leading-relaxed">{beasiswa.deskripsi}</p>
+                                                    </div>
+
+                                                    <div className="mb-6">
+                                                        <h2 className="text-2xl font-bold mb-3">Persyaratan</h2>
+                                                        <ul className="list-disc list-inside space-y-2">
+                                                            {beasiswa.syarat.map((item, index) => (
+                                                                <li key={index}>{item}</li>
+                                                            ))}
+                                                        </ul>
+                                                    </div>
+
+                                                    <div className="mb-6">
+                                                        <h2 className="text-2xl font-bold mb-3">Manfaat</h2>
+                                                        <ul className="list-disc list-inside space-y-2">
+                                                            {beasiswa.benefit.map((item, index) => (
+                                                                <li key={index}>{item}</li>
+                                                            ))}
+                                                        </ul>
+                                                    </div>
+
+                                                    <div className="mb-6">
+                                                        <h2 className="text-2xl font-bold mb-3">Dokumen yang Diperlukan</h2>
+                                                        <ul className="list-disc list-inside space-y-2">
+                                                            {beasiswa.dokumen.map((item, index) => (
+                                                                <li key={index}>{item}</li>
+                                                            ))}
+                                                        </ul>
+                                                    </div>
+                                                </>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
@@ -181,8 +183,8 @@ function AdminDetailBeasiswa() {
                                             <h2 className="card-title mb-4">Aksi Cepat</h2>
 
                                             <div>
-                                                <button className="btn btn-warning justify-end mr-4">Edit</button>
-                                                <button className="btn btn-error justify-end">Hapus</button>
+                                                <button className="btn btn-warning justify-end mr-4" onClick={() => setIsEditing(true)}>Edit</button>
+                                                <button className="btn btn-error justify-end" onClick={handleDelete}>Hapus</button>
                                             </div>
 
                                             <div className="divider"></div>
@@ -197,7 +199,6 @@ function AdminDetailBeasiswa() {
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>

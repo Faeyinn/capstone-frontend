@@ -1,38 +1,56 @@
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { useAuth } from '../context/AuthContext'; // Import useAuth
+import { useState } from 'react'; // Import useState
 
 function BerandaAdmin() {
-    // Data dummy beasiswa
-    const beasiswaList = [
-        {
-            id: 1,
-            nama: "Beasiswa SmartPath",
-            jenjang: "S1",
-            deadline: "25 Desember 2025",
-            deskripsi: "Beasiswa untuk mahasiswa berprestasi...",
-            syarat: ["IPK minimal 3.0", "Aktif organisasi", "Surat rekomendasi"],
-            benefit: ["Biaya kuliah penuh", "Uang saku bulanan", "Laptop"]
-        },
-        {
-            id: 2,
-            nama: "Beasiswa Excellence",
-            jenjang: "S1",
-            deadline: "30 Januari 2026",
-            deskripsi: "Program beasiswa unggulan...",
-            syarat: ["IPK minimal 3.5", "Prestasi akademik", "Essay motivasi"],
-            benefit: ["Biaya kuliah", "Tunjangan hidup", "Pelatihan skill"]
-        },
-        {
-            id: 3,
-            nama: "Beasiswa Future Leaders",
-            jenjang: "S1",
-            deadline: "15 Februari 2026",
-            deskripsi: "Beasiswa untuk calon pemimpin masa depan...",
-            syarat: ["Leadership experience", "Community service", "Interview"],
-            benefit: ["Full scholarship", "Mentoring program", "Networking"]
-        }
-    ];
+    const { beasiswaList, addBeasiswa } = useAuth(); // Ambil beasiswaList dan addBeasiswa dari context
+
+    // State untuk form tambah beasiswa
+    const [newBeasiswa, setNewBeasiswa] = useState({
+        nama: "",
+        penyedia: "", // Tambahkan penyedia
+        jenjang: "",
+        deadline: "",
+        deskripsi: "",
+        syarat: [],
+        benefit: [],
+        dokumen: []
+    });
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setNewBeasiswa(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
+
+    const handleArrayInputChange = (e) => {
+        const { name, value } = e.target;
+        setNewBeasiswa(prevState => ({
+            ...prevState,
+            [name]: value.split(',').map(item => item.trim()) // Pisahkan dengan koma
+        }));
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        addBeasiswa(newBeasiswa);
+        // Reset form setelah menambah
+        setNewBeasiswa({
+            nama: "",
+            penyedia: "",
+            jenjang: "",
+            deadline: "",
+            deskripsi: "",
+            syarat: [],
+            benefit: [],
+            dokumen: []
+        });
+        alert('Beasiswa berhasil ditambahkan!');
+    };
 
     return (
         <div>
@@ -51,32 +69,30 @@ function BerandaAdmin() {
                         <div className="flex justify-center items-center bg-white bg-opacity-80 rounded-lg p-8">
                             <fieldset className="fieldset bg-white shadow-xl rounded-box w-xs border p-4">
                                 <h2 className="text-xl text-black font-bold mb-4 text-center">Tambah Beasiswa</h2>
+                                <form onSubmit={handleSubmit}>
+                                    <label className="label text-black">Nama Beasiswa</label>
+                                    <input type="text" name="nama" className="input bg-white text-black border-gray-400 w-full" placeholder="Nama Beasiswa" value={newBeasiswa.nama} onChange={handleInputChange} required />
 
-                                <label className="label text-black">Nama Beasiswa</label>
-                                <input type="name" className="input bg-white text-black border-gray-400" placeholder="Nama Beasiswa" />
+                                    <label className="label text-black">Jenjang Pendidikan</label>
+                                    <input type="text" name="jenjang" className="input bg-white text-black border-gray-400 w-full" placeholder="Jenjang Pendidikan" value={newBeasiswa.jenjang} onChange={handleInputChange} required />
 
-                                <label className="label text-black">Penyedia Beasiswa</label>
-                                <input type="name" className="input bg-white text-black border-gray-400" placeholder="Penyedia Beasiswa" />
-                               
-                                <label className="label text-black">Jenjang Pendidikan</label>
-                                <input type="name" className="input bg-white text-black border-gray-400" placeholder="Jenjang Pendidikan" />
-                               
-                                <label className="label text-black">Deadline</label>
-                                <input type="name" className="input bg-white text-black border-gray-400" placeholder="Deadline" />
-                               
-                                <label className="label text-black">Deskripsi Singkat</label>
-                                <input type="name" className="input bg-white text-black border-gray-400" placeholder="Deskripsi Singkat" />
-                               
-                                <label className="label text-black">Persyaratan</label>
-                                <input type="name" className="input bg-white text-black border-gray-400" placeholder="Persyaratan" />
-                               
-                                <label className="label text-black">Dokumen</label>
-                                <input type="name" className="input bg-white text-black border-gray-400" placeholder="Dokumen" />
-                               
-                                <label className="label text-black">Benefit</label>
-                                <input type="name" className="input bg-white text-black border-gray-400" placeholder="Benefit" />
+                                    <label className="label text-black">Deadline</label>
+                                    <input type="text" name="deadline" className="input bg-white text-black border-gray-400 w-full" placeholder="Deadline (contoh: 25 Desember 2025)" value={newBeasiswa.deadline} onChange={handleInputChange} required />
 
-                                <button className="btn btn-success mt-4 mb-4">Tambah</button>
+                                    <label className="label text-black">Deskripsi Singkat</label>
+                                    <textarea name="deskripsi" className="textarea bg-white text-black border-gray-400 w-full" placeholder="Deskripsi Singkat" value={newBeasiswa.deskripsi} onChange={handleInputChange} required></textarea>
+
+                                    <label className="label text-black">Persyaratan (pisahkan dengan koma)</label>
+                                    <textarea name="syarat" className="textarea bg-white text-black border-gray-400 w-full" placeholder="Syarat 1, Syarat 2, ..." value={newBeasiswa.syarat.join(', ')} onChange={handleArrayInputChange} required></textarea>
+
+                                    <label className="label text-black">Dokumen (pisahkan dengan koma)</label>
+                                    <textarea name="dokumen" className="textarea bg-white text-black border-gray-400 w-full" placeholder="Dokumen 1, Dokumen 2, ..." value={newBeasiswa.dokumen.join(', ')} onChange={handleArrayInputChange} required></textarea>
+
+                                    <label className="label text-black">Benefit (pisahkan dengan koma)</label>
+                                    <textarea name="benefit" className="textarea bg-white text-black border-gray-400 w-full" placeholder="Benefit 1, Benefit 2, ..." value={newBeasiswa.benefit.join(', ')} onChange={handleArrayInputChange} required></textarea>
+
+                                    <button type="submit" className="btn btn-success mt-4 mb-4 w-full">Tambah Beasiswa</button>
+                                </form>
                             </fieldset>
                         </div>
 
@@ -90,8 +106,9 @@ function BerandaAdmin() {
                                         <p className="text-gray-600">Deadline: {beasiswa.deadline}</p>
                                         <div className="card-actions justify-end">
                                             <Link to={`/admin-detail-beasiswa/${beasiswa.id}`} className="btn btn-primary">Detail</Link>
-                                            <button className="btn btn-warning">Edit</button>
-                                            <button className="btn btn-error">Hapus</button>
+                                            {/* Edit dan Hapus akan diimplementasikan di AdminDetailBeasiswa */}
+                                            {/* <button className="btn btn-warning">Edit</button>
+                                            <button className="btn btn-error">Hapus</button> */}
                                         </div>
                                     </div>
                                 </div>

@@ -1,93 +1,13 @@
 import { useParams, Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { useAuth } from '../context/AuthContext'; // Import useAuth
 
 function DetailBeasiswa() {
     const { id } = useParams();
+    const { beasiswaList } = useAuth(); // Ambil beasiswaList dari context
 
-    // Data dummy - dalam aplikasi nyata, fetch dari API berdasarkan ID
-    const beasiswaData = {
-        1: {
-            id: 1,
-            nama: "Beasiswa SmartPath",
-            jenjang: "S1",
-            deadline: "25 Desember 2025",
-            deskripsi: "Beasiswa SmartPath adalah program beasiswa yang ditujukan untuk mahasiswa berprestasi yang memiliki potensi untuk menjadi pemimpin masa depan. Program ini menyediakan dukungan penuh untuk pendidikan tinggi.",
-            syarat: [
-                "IPK minimal 3.0",
-                "Aktif dalam organisasi kemahasiswaan",
-                "Surat rekomendasi dari dosen",
-                "Essay motivasi",
-                "Tidak sedang menerima beasiswa lain"
-            ],
-            benefit: [
-                "Biaya kuliah penuh selama 4 tahun",
-                "Uang saku bulanan Rp 2.000.000",
-                "Laptop dan peralatan study",
-                "Program mentoring",
-                "Kesempatan magang di perusahaan partner"
-            ],
-            dokumen: [
-                "Fotokopi KTP",
-                "Transkrip nilai terbaru",
-                "Surat keterangan tidak mampu",
-                "Essay motivasi (max 500 kata)",
-                "Surat rekomendasi dari dosen"
-            ]
-        },
-        2: {
-            id: 2,
-            nama: "Beasiswa Excellence",
-            jenjang: "S1",
-            deadline: "30 Januari 2026",
-            deskripsi: "Program beasiswa unggulan untuk mahasiswa dengan prestasi akademik tinggi dan potensi kepemimpinan yang kuat.",
-            syarat: [
-                "IPK minimal 3.5",
-                "Prestasi akademik atau non-akademik",
-                "Essay motivasi",
-                "Interview online"
-            ],
-            benefit: [
-                "Biaya kuliah penuh",
-                "Tunjangan hidup bulanan",
-                "Pelatihan soft skills",
-                "Sertifikasi internasional"
-            ],
-            dokumen: [
-                "Fotokopi KTP",
-                "Transkrip nilai",
-                "Sertifikat prestasi",
-                "Essay motivasi"
-            ]
-        },
-        3: {
-            id: 3,
-            nama: "Beasiswa Future Leaders",
-            jenjang: "S1",
-            deadline: "15 Februari 2026",
-            deskripsi: "Beasiswa untuk calon pemimpin masa depan dengan fokus pada pengembangan karakter dan kemampuan kepemimpinan.",
-            syarat: [
-                "Pengalaman kepemimpinan",
-                "Aktif dalam kegiatan sosial",
-                "Interview dan assessment",
-                "Komitmen program mentoring"
-            ],
-            benefit: [
-                "Full scholarship",
-                "Program mentoring eksklusif",
-                "Networking dengan alumni",
-                "Leadership development program"
-            ],
-            dokumen: [
-                "CV lengkap",
-                "Portfolio kepemimpinan",
-                "Surat rekomendasi",
-                "Video presentasi"
-            ]
-        }
-    };
-
-    const beasiswa = beasiswaData[id];
+    const beasiswa = beasiswaList.find(b => b.id === parseInt(id)); // Cari beasiswa berdasarkan ID
 
     if (!beasiswa) {
         return (
@@ -96,7 +16,7 @@ function DetailBeasiswa() {
                 <div className="container mx-auto px-4 py-8">
                     <div className="text-center">
                         <h1 className="text-4xl font-bold mb-4">Beasiswa Tidak Ditemukan</h1>
-                        <Link to="/" className="btn btn-primary">Kembali ke Daftar Beasiswa</Link>
+                        <Link to="/list-beasiswa" className="btn btn-primary">Kembali ke Daftar Beasiswa</Link>
                     </div>
                 </div>
                 <Footer />

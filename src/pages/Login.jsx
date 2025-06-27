@@ -1,22 +1,40 @@
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from 'react'; // Import useEffect
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 function Login() {
-    const { login } = useAuth();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
     const navigate = useNavigate();
+    const { login, isAuthenticated, userRole } = useAuth(); // Ambil isAuthenticated dan userRole
 
-    const handleLogin = (role) => {
-        login(role);
-        if (role === 'admin') {
-            navigate('/beranda-admin');
-        } else {
-            navigate('/list-beasiswa')
+    useEffect(() => {
+        if (isAuthenticated) { // Jika sudah terautentikasi
+            if (userRole === 'admin') {
+                navigate('/beranda-admin', { replace: true }); // Redirect ke admin, replace history
+            } else if (userRole === 'user') {
+                navigate('/list-beasiswa', { replace: true }); // Redirect ke list beasiswa, replace history
+            }
         }
-    }
+    }, [isAuthenticated, userRole, navigate]); // Dependensi useEffect
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setError('');
+
+        const loginSuccess = login(email, password);
+
+        if (!loginSuccess) { // Hanya set error jika login gagal
+            setError('Email atau password salah.');
+        }
+        // Navigasi sudah dihandle oleh useEffect jika loginSuccess
+    };
 
     return (
+        // ... (sisanya sama seperti sebelumnya) ...
         <div>
             <Navbar />
             <div
@@ -27,28 +45,59 @@ function Login() {
                 }}
             >
                 <div className="hero-overlay"></div>
-                <div className="hero-content text-neutral-content text-center">
-                    <div className="flex justify-center items-center bg-white bg-opacity-80 rounded-lg p-8">
-                        <fieldset className="fieldset bg-white shadow-xl rounded-box w-xs border p-4">
-                            <h2 className="text-xl text-primary font-bold mb-4 text-center">Login</h2>
-
-                            <label className="label text-black">Email</label>
-                            <input type="email" className="input bg-white text-black border-gray-400" placeholder="Email" />
-
-                            <label className="label text-black">Password</label>
-                            <input type="password" className="input bg-white text-black border-gray-400" placeholder="Password" />
-
-                            <button className="btn btn-primary mt-4 w-full mb-2" onClick={() => handleLogin('user')}>Login as User</button>
-                            <button className="btn btn-secondary w-full" onClick={() => handleLogin('admin')}>Login as Admin</button>
-                            
-                            <p className="mt-4 text-sm text-black">
-                                Belum punya akun? <Link to="/register" className="text-primary">Daftar disini</Link>
+                <div className="hero-content text-neutral-content">
+                    <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-white">
+                        <form onSubmit={handleSubmit} className="card-body">
+                            <h2 className="text-3xl text-center font-bold text-primary mb-4">Login</h2>
+                            <div className="form-control">
+                                <label className="label">
+                                    <span className="label-text text-black">Email</span>
+                                </label>
+                                <input
+                                    type="email"
+                                    placeholder="email"
+                                    className="input input-bordered bg-white text-black border-gray-300"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            <div className="form-control">
+                                <label className="label">
+                                    <span className="label-text text-black">Password</span>
+                                </label>
+                                <input
+                                    type="password"
+                                    placeholder="password"
+                                    className="input input-bordered bg-white text-black border-gray-300"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    required
+                                />
+                                <label className="label">
+                                    <a href="#" className="label-text-alt link link-hover text-black">
+                                        Forgot password?
+                                    </a>
+                                </label>
+                            </div>
+                            {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+                            <div className="form-control mt-6">
+                                <button type="submit" className="btn btn-primary w-full">Login</button>
+                            </div>
+                            <p className="text-center text-black mt-4">
+                                Belum punya akun? <a href="/register" className="link link-hover text-blue-500">Daftar di sini</a>
                             </p>
-                        </fieldset>
+                            <p className="text-center text-black mt-2">
+                                <span className="font-bold">Demo Akun:</span>
+                                <br />
+                                Admin: admin@example.com / adminpassword
+                                <br />
+                                User: user@example.com / userpassword
+                            </p>
+                        </form>
                     </div>
                 </div>
             </div>
-
             <Footer />
         </div>
     );

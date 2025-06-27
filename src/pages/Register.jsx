@@ -1,8 +1,40 @@
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from 'react'; // Import useEffect
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext'; // Import useAuth
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 function Register() {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
+    const { isAuthenticated, userRole } = useAuth(); // Ambil isAuthenticated dan userRole
+
+    useEffect(() => {
+        if (isAuthenticated) { // Jika sudah terautentikasi
+            if (userRole === 'admin') {
+                navigate('/beranda-admin', { replace: true }); // Redirect ke admin, replace history
+            } else if (userRole === 'user') {
+                navigate('/list-beasiswa', { replace: true }); // Redirect ke list beasiswa, replace history
+            }
+        }
+    }, [isAuthenticated, userRole, navigate]); // Dependensi useEffect
+
+    const handleRegister = (e) => {
+        e.preventDefault();
+        setError('');
+
+        if (password !== confirmPassword) {
+            setError('Password dan konfirmasi password tidak cocok.');
+            return;
+        }
+
+        alert('Pendaftaran berhasil! Anda bisa mencoba login dengan akun demo.');
+        navigate('/login');
+    };
+
     return (
         <div>
             <Navbar />
@@ -14,29 +46,60 @@ function Register() {
                 }}
             >
                 <div className="hero-overlay"></div>
-                <div className="hero-content text-neutral-content text-center">
-                    <div className="flex justify-center items-center bg-white bg-opacity-80 rounded-lg p-8">
-                        <fieldset className="fieldset bg-white shadow-xl rounded-box w-xs border p-4">
-                            <h2 className="text-xl font-bold mb-4 text-center text-primary">Register</h2>
-
-                            <label className="label text-black">Email</label>
-                            <input type="email" className="input bg-white text-black border-gray-400" placeholder="Email" />
-
-                            <label className="label text-black">Password</label>
-                            <input type="password" className="input bg-white text-black border-gray-400" placeholder="Password" />
-
-                            <label className="label text-black">Confirm Password</label>
-                            <input type="password" className="input bg-white text-black border-gray-400" placeholder="Password" />
-
-                            <button className="btn btn-primary mt-4">Register</button>
-                            <p className="mt-4 text-sm text-black">
-                                Sudah punya akun? <Link to="/login" className="text-primary">Login disini</Link>
+                <div className="hero-content text-neutral-content">
+                    <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-white">
+                        <form onSubmit={handleRegister} className="card-body">
+                            <h2 className="text-3xl text-center font-bold text-primary mb-4">Register</h2>
+                            <div className="form-control">
+                                <label className="label">
+                                    <span className="label-text text-black">Email</span>
+                                </label>
+                                <input
+                                    type="email"
+                                    placeholder="email"
+                                    className="input input-bordered bg-white text-black border-gray-300"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            <div className="form-control">
+                                <label className="label">
+                                    <span className="label-text text-black">Password</span>
+                                </label>
+                                <input
+                                    type="password"
+                                    placeholder="password"
+                                    className="input input-bordered bg-white text-black border-gray-300"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            <div className="form-control">
+                                <label className="label">
+                                    <span className="label-text text-black">Konfirmasi Password</span>
+                                </label>
+                                <input
+                                    type="password"
+                                    placeholder="konfirmasi password"
+                                    className="input input-bordered bg-white text-black border-gray-300"
+                                    value={confirmPassword}
+                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+                            <div className="form-control mt-6">
+                                <button type="submit" className="btn btn-primary w-full">Daftar</button>
+                            </div>
+                            <p className="text-center text-black mt-4">
+                                Sudah punya akun? <a href="/login" className="link link-hover text-blue-500">Login di sini</a>
                             </p>
-                        </fieldset>
+                        </form>
                     </div>
                 </div>
             </div>
-
             <Footer />
         </div>
     );

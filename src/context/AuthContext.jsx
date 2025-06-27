@@ -88,10 +88,23 @@ export const AuthProvider = ({ children }) => {
         }
     ]);
 
-    const login = (role) => {
-        setIsAuthenticated(true);
-        setUserRole(role);
-        console.log(`User logged in as: ${role}`);
+    // Tambahkan data pengguna dummy di sini
+    const users = [
+        { email: 'admin@example.com', password: 'adminpassword', role: 'admin' },
+        { email: 'user@example.com', password: 'userpassword', role: 'user' },
+    ];
+
+    const login = (email, password) => { // Menerima email dan password
+        const foundUser = users.find(user => user.email === email && user.password === password);
+        if (foundUser) {
+            setIsAuthenticated(true);
+            setUserRole(foundUser.role);
+            console.log(`User logged in as: ${foundUser.role}`);
+            return true; // Login berhasil
+        } else {
+            console.log('Login failed: Invalid email or password');
+            return false; // Login gagal
+        }
     }
 
     const logout = () => {

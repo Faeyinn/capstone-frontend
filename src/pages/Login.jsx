@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'; // Import useEffect
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -85,7 +85,7 @@ function Login() {
                                 <button type="submit" className="btn btn-primary w-full">Login</button>
                             </div>
                             <p className="text-center text-black mt-4">
-                                Belum punya akun? <a href="/register" className="link link-hover text-blue-500">Daftar di sini</a>
+                                Belum punya akun? <Link to="/register" className="link link-hover text-blue-500">Daftar di sini</Link>
                             </p>
                             <p className="text-center text-black mt-2">
                                 <span className="font-bold">Demo Akun:</span>

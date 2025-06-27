@@ -94,7 +94,7 @@ function Register() {
                                 <button type="submit" className="btn btn-primary w-full">Daftar</button>
                             </div>
                             <p className="text-center text-black mt-4">
-                                Sudah punya akun? <a href="/login" className="link link-hover text-blue-500">Login di sini</a>
+                                Sudah punya akun? <Link to="/login" className="link link-hover text-blue-500">Login di sini</Link>
                             </p>
                         </form>
                     </div>

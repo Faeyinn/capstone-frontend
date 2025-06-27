@@ -18,13 +18,13 @@ function App() {
         <Route path="/register" element={<Register />} />
 
         {/* Rute yang hanya dapat diakses setelah user login */}
-        <Route element={<PrivateRoute />}> {/* Gunakan PrivateRoute di sini */}
+        <Route element={<PrivateRoute />}>
           <Route path="/list-beasiswa" element={<ListBeasiswa />} />
           <Route path="/detail-beasiswa/:id" element={<DetailBeasiswa />} />
         </Route>
 
         {/* Rute yang hanya dapat diakses setelah admin login */}
-        <Route element={<AdminRoute />}> {/* Gunakan AdminRoute di sini */}
+        <Route element={<AdminRoute />}>
           <Route path="/beranda-admin" element={<BerandaAdmin />} />
           <Route path="/admin-detail-beasiswa/:id" element={<AdminDetailBeasiswa />} />
         </Route>

@@ -16,7 +16,7 @@ function Beranda() {
         <div className="hero-overlay"></div>
         <div className="hero-content text-neutral-content text-center">
           <div className="max-w-md">
-            <h1 className="mb-5 text-5xl font-bold">Welcome to ScholarMatch</h1>
+            <h1 className="mb-5 text-5xl font-bold">Selamat Datang di ScholarMatch <br /> </h1>
             <p className="mb-5">
               ScholarMatch adalah paltform untuk mencari beasiswa yang mudah dan cepat. ScholarMatch membantu kamu menemukan beasiswa yang sesuai dengan kebutuhanmu.
             </p>

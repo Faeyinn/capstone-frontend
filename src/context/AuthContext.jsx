@@ -90,8 +90,8 @@ export const AuthProvider = ({ children }) => {
 
     // Tambahkan data pengguna dummy di sini
     const users = [
-        { email: 'admin@example.com', password: 'adminpassword', role: 'admin' },
-        { email: 'user@example.com', password: 'userpassword', role: 'user' },
+        { email: 'halo@admin.com', password: 'adminpassword', role: 'admin' },
+        { email: 'halo@user.com', password: 'userpassword', role: 'user' },
     ];
 
     const login = (email, password) => { // Menerima email dan password

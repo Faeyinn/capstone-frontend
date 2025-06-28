@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { useAuth } from '../context/AuthContext'; // Import useAuth
+import { useAuth } from '../context/AuthContext';
 
 function ListBeasiswa() {
-    const { beasiswaList } = useAuth(); // Ambil beasiswaList dari context
+    const { beasiswaList } = useAuth(); 
 
     return (
         <div>
@@ -21,7 +21,7 @@ function ListBeasiswa() {
                     <div className="max-w-7xl mx-auto p-6">
                         <h1 className="mb-8 text-5xl text-center font-bold">Daftar Beasiswa</h1>
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                            {beasiswaList.map((beasiswa) => ( // Gunakan beasiswaList dari context
+                            {beasiswaList.map((beasiswa) => (
                                 <div key={beasiswa.id} className="card bg-white shadow-xl">
                                     <div className="card-body">
                                         <h2 className="card-title text-gray-800">{beasiswa.nama}</h2>

@@ -30,11 +30,9 @@ function Login() {
         if (!loginSuccess) { // Hanya set error jika login gagal
             setError('Email atau password salah.');
         }
-        // Navigasi sudah dihandle oleh useEffect jika loginSuccess
     };
 
     return (
-        // ... (sisanya sama seperti sebelumnya) ...
         <div>
             <Navbar />
             <div

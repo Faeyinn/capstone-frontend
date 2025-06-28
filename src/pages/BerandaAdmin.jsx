@@ -5,12 +5,12 @@ import { useAuth } from '../context/AuthContext'; // Import useAuth
 import { useState } from 'react'; // Import useState
 
 function BerandaAdmin() {
-    const { beasiswaList, addBeasiswa } = useAuth(); // Ambil beasiswaList dan addBeasiswa dari context
+    const { beasiswaList, addBeasiswa } = useAuth();
 
     // State untuk form tambah beasiswa
     const [newBeasiswa, setNewBeasiswa] = useState({
         nama: "",
-        penyedia: "", // Tambahkan penyedia
+        penyedia: "",
         jenjang: "",
         deadline: "",
         deskripsi: "",
@@ -31,7 +31,7 @@ function BerandaAdmin() {
         const { name, value } = e.target;
         setNewBeasiswa(prevState => ({
             ...prevState,
-            [name]: value.split(',').map(item => item.trim()) // Pisahkan dengan koma
+            [name]: value.split(',').map(item => item.trim())
         }));
     };
 

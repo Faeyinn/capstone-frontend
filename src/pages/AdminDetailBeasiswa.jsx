@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react'; // Import useState dan useEffect
 function AdminDetailBeasiswa() {
     const { id } = useParams();
     const navigate = useNavigate();
-    const { beasiswaList, editBeasiswa, deleteBeasiswa } = useAuth(); // Ambil beasiswaList, editBeasiswa, deleteBeasiswa dari context
+    const { beasiswaList, editBeasiswa, deleteBeasiswa } = useAuth();
 
     const beasiswa = beasiswaList.find(b => b.id === parseInt(id)); // Cari beasiswa berdasarkan ID
 
@@ -22,7 +22,7 @@ function AdminDetailBeasiswa() {
                 jenjang: beasiswa.jenjang,
                 deadline: beasiswa.deadline,
                 deskripsi: beasiswa.deskripsi,
-                syarat: beasiswa.syarat.join(', '), // Ubah array menjadi string untuk input
+                syarat: beasiswa.syarat.join(', '),
                 benefit: beasiswa.benefit.join(', '),
                 dokumen: beasiswa.dokumen.join(', ')
             });
@@ -72,7 +72,7 @@ function AdminDetailBeasiswa() {
         if (window.confirm(`Apakah Anda yakin ingin menghapus beasiswa ${beasiswa.nama}?`)) {
             deleteBeasiswa(beasiswa.id);
             alert('Beasiswa berhasil dihapus!');
-            navigate('/beranda-admin'); // Kembali ke beranda admin setelah dihapus
+            navigate('/beranda-admin');
         }
     };
 

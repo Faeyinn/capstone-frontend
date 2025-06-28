@@ -5,9 +5,9 @@ import { useAuth } from '../context/AuthContext'; // Import useAuth
 
 function DetailBeasiswa() {
     const { id } = useParams();
-    const { beasiswaList } = useAuth(); // Ambil beasiswaList dari context
+    const { beasiswaList } = useAuth();
 
-    const beasiswa = beasiswaList.find(b => b.id === parseInt(id)); // Cari beasiswa berdasarkan ID
+    const beasiswa = beasiswaList.find(b => b.id === parseInt(id));
 
     if (!beasiswa) {
         return (

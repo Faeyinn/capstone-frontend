@@ -2,7 +2,8 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { useAuth } from '../context/AuthContext'; // Import useAuth
-import { useState, useEffect } from 'react'; // Import useState dan useEffect
+import { useState, useEffect } from 'react';
+import Swal from 'sweetalert2'
 
 function AdminDetailBeasiswa() {
     const { id } = useParams();
@@ -65,14 +66,33 @@ function AdminDetailBeasiswa() {
         };
         editBeasiswa(updatedBeasiswa);
         setIsEditing(false);
-        alert('Beasiswa berhasil diupdate!');
+        Swal.fire({
+            title: "Success!",
+            text: "Beasiswa berhasil di update!",
+            icon: "success"
+        });
     };
 
     const handleDelete = () => {
-        if (window.confirm(`Apakah Anda yakin ingin menghapus beasiswa ${beasiswa.nama}?`)) {
-            deleteBeasiswa(beasiswa.id);
-            alert('Beasiswa berhasil dihapus!');
-            navigate('/beranda-admin');
+        if (Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: "Deleted!",
+                    text: "Your file has been deleted.",
+                    icon: "success"
+                });
+                deleteBeasiswa(beasiswa.id);
+                navigate('/beranda-admin');
+            }
+        })) {
         }
     };
 

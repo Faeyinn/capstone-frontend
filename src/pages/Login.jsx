@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import Swal from 'sweetalert2';
 
 function Login() {
     const [email, setEmail] = useState('');
@@ -29,6 +30,12 @@ function Login() {
 
         if (!loginSuccess) { // Hanya set error jika login gagal
             setError('Email atau password salah.');
+        } else {
+            Swal.fire({
+                title: "Selamat !",
+                text: "Kamu berhasil Login!",
+                icon: "success"
+            });
         }
     };
 

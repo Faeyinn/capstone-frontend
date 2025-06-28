@@ -92,6 +92,7 @@ export const AuthProvider = ({ children }) => {
     const users = [
         { email: 'halo@admin.com', password: 'adminpassword', role: 'admin' },
         { email: 'halo@user.com', password: 'userpassword', role: 'user' },
+        { email: 'desfriemilda13@gmail.com', password: 'aaaa', role: 'admin' },
     ];
 
     const login = (email, password) => { // Menerima email dan password

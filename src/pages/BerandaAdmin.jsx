@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { useAuth } from '../context/AuthContext'; // Import useAuth
 import { useState } from 'react'; // Import useState
+import Swal from 'sweetalert2'
 
 function BerandaAdmin() {
     const { beasiswaList, addBeasiswa } = useAuth();
@@ -49,7 +50,11 @@ function BerandaAdmin() {
             benefit: [],
             dokumen: []
         });
-        alert('Beasiswa berhasil ditambahkan!');
+        Swal.fire({
+            title: "Success!",
+            text: "Beasiswa berhasil ditambahkan!",
+            icon: "success"
+        });
     };
 
     return (

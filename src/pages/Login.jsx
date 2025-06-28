@@ -88,9 +88,9 @@ function Login() {
                             <p className="text-center text-black mt-2">
                                 <span className="font-bold">Demo Akun:</span>
                                 <br />
-                                Admin: admin@example.com / adminpassword
+                                Admin: halo@admin.com / adminpassword
                                 <br />
-                                User: user@example.com / userpassword
+                                User: halo@user.com / userpassword
                             </p>
                         </form>
                     </div>

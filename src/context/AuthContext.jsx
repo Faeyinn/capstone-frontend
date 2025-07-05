@@ -35,56 +35,6 @@ export const AuthProvider = ({ children }) => {
                 "Essay motivasi (max 500 kata)",
                 "Surat rekomendasi dari dosen"
             ]
-        },
-        {
-            id: 2,
-            nama: "Beasiswa Excellence",
-            jenjang: "S1",
-            deadline: "30 Januari 2026",
-            deskripsi: "Program beasiswa unggulan untuk mahasiswa dengan prestasi akademik tinggi dan potensi kepemimpinan yang kuat.",
-            syarat: [
-                "IPK minimal 3.5",
-                "Prestasi akademik atau non-akademik",
-                "Essay motivasi",
-                "Interview online"
-            ],
-            benefit: [
-                "Biaya kuliah penuh",
-                "Tunjangan hidup bulanan",
-                "Pelatihan soft skills",
-                "Sertifikasi internasional"
-            ],
-            dokumen: [
-                "Fotokopi KTP",
-                "Transkrip nilai",
-                "Sertifikat prestasi",
-                "Essay motivasi"
-            ]
-        },
-        {
-            id: 3,
-            nama: "Beasiswa Future Leaders",
-            jenjang: "S1",
-            deadline: "15 Februari 2026",
-            deskripsi: "Beasiswa untuk calon pemimpin masa depan dengan fokus pada pengembangan karakter dan kemampuan kepemimpinan.",
-            syarat: [
-                "Pengalaman kepemimpinan",
-                "Aktif dalam kegiatan sosial",
-                "Interview dan assessment",
-                "Komitmen program mentoring"
-            ],
-            benefit: [
-                "Full scholarship",
-                "Program mentoring eksklusif",
-                "Networking dengan alumni",
-                "Leadership development program"
-            ],
-            dokumen: [
-                "CV lengkap",
-                "Portfolio kepemimpinan",
-                "Surat rekomendasi",
-                "Video presentasi"
-            ]
         }
     ]);
 

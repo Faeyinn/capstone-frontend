@@ -40,16 +40,18 @@ function BerandaAdmin() {
                 }}
             >
                 <div className="hero-overlay"></div>
-                <div className="hero-content text-neutral-content">
-                    <div className="max-w-7xl mx-auto p-6">
+                <div className="hero-content text-neutral-content w-full"> {/* Tambahkan w-full */}
+                    <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 w-full"> {/* Sesuaikan padding, tambahkan w-full */}
 
-                        <h1 className="mt-8 mb-8 text-5xl text-center font-bold">Daftar Beasiswa</h1>
-                        <div className="overflow-x-auto rounded-box border border-base-content/5 bg-white bg-opacity-80 p-6 shadow-lg">
-                        
-                        {/* Tombol untuk menambah beasiswa baru */}
-                        <div className="flex justify-center mb-6">
-                            <Link to="/add-beasiswa" className="btn btn-info btn-lg">Tambah Beasiswa Baru</Link>
-                        </div>
+                        <h1 className="mt-8 mb-8 text-3xl sm:text-4xl lg:text-5xl text-center font-bold">Daftar Beasiswa</h1> {/* Sesuaikan ukuran teks */}
+                        <div className="overflow-x-auto rounded-box border border-base-content/5 bg-white bg-opacity-80 p-4 sm:p-6 shadow-lg"> {/* Sesuaikan padding */}
+                            
+                            {/* Tombol untuk menambah beasiswa baru */}
+                            <div className="flex justify-center mb-6">
+                                <Link to="/add-beasiswa" className="btn btn-info btn-md sm:btn-lg">Tambah Beasiswa Baru</Link>
+                            </div>
+
+                            {/* Tabel Responsif */}
                             <table className="table w-full mb-6 shadow-md rounded-lg">
                                 <thead className="bg-primary text-white">
                                     <tr>
@@ -59,20 +61,26 @@ function BerandaAdmin() {
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
-                                {beasiswaList.map((beasiswa) => (
-                                    <tbody key={beasiswa.id} className=" text-black hover:bg-gray-100">
-                                        <tr>
+                                <tbody>
+                                {beasiswaList.length > 0 ? (
+                                    beasiswaList.map((beasiswa) => (
+                                        <tr key={beasiswa.id} className="text-black hover:bg-gray-100">
                                             <td>{beasiswa.nama}</td>
                                             <td>{beasiswa.jenjang}</td>
                                             <td>{beasiswa.deadline}</td>
-                                            <td className="card-actions justify-end">
-                                                <Link to={`/admin-detail-beasiswa/${beasiswa.id}`} className="btn btn-primary">Detail</Link>
-                                                <Link to={`/edit-beasiswa/${beasiswa.id}`} className="btn btn-warning">Edit</Link>
-                                                <button onClick={() => handleDelete(beasiswa.id)} className="btn btn-error">Hapus</button>
+                                            <td className="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center"> {/* Gunakan flexbox untuk aksi tombol */}
+                                                <Link to={`/admin-detail-beasiswa/${beasiswa.id}`} className="btn btn-xs sm:btn-sm btn-primary">Detail</Link>
+                                                <Link to={`/edit-beasiswa/${beasiswa.id}`} className="btn btn-xs sm:btn-sm btn-warning">Edit</Link>
+                                                <button onClick={() => handleDelete(beasiswa.id)} className="btn btn-xs sm:btn-sm btn-error">Hapus</button>
                                             </td>
                                         </tr>
-                                    </tbody>
-                                ))}
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="4" className="text-center text-gray-500 py-4">Belum ada beasiswa ditambahkan.</td>
+                                    </tr>
+                                )}
+                                </tbody>
                             </table>
                         </div>
                     </div>

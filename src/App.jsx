@@ -6,8 +6,10 @@ import ListBeasiswa from './pages/ListBeasiswa';
 import DetailBeasiswa from './pages/DetailBeasiswa';
 import BerandaAdmin from './pages/BerandaAdmin';
 import AdminDetailBeasiswa from './pages/AdminDetailBeasiswa';
-import PrivateRoute from './components/PrivateRoute'; // Import PrivateRoute
-import AdminRoute from './components/AdminRoute';     // Import AdminRoute
+import PrivateRoute from './components/PrivateRoute';
+import AdminRoute from './components/AdminRoute';
+import EditBeasiswa from './pages/EditBeasiswa';
+import AddBeasiswa from './pages/AddBeasiswa';
 
 function App() {
   return (
@@ -27,6 +29,8 @@ function App() {
         <Route element={<AdminRoute />}>
           <Route path="/beranda-admin" element={<BerandaAdmin />} />
           <Route path="/admin-detail-beasiswa/:id" element={<AdminDetailBeasiswa />} />
+          <Route path="/edit-beasiswa/:id" element={<EditBeasiswa />} />
+          <Route path="/add-beasiswa" element={<AddBeasiswa />} />
         </Route>
       </Routes>
     </div>

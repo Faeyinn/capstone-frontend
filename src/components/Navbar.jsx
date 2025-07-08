@@ -24,7 +24,7 @@ function SidebarAdmin() {
             <div className="drawer-content flex flex-col">
                 {/* Navbar */}
                 <div className="navbar bg-primary w-full">
-                    <div className="flex-none lg:hidden">
+                    <div className="flex-none">
                         <label htmlFor="my-drawer-3" aria-label="open sidebar" className="btn btn-square btn-ghost">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"

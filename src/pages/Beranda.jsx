@@ -1,11 +1,8 @@
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
 import { Link } from 'react-router-dom'
 
 function Beranda() {
   return (
     <div>
-      <Navbar />
       <div
         className="hero min-h-screen"
         style={{
@@ -24,8 +21,6 @@ function Beranda() {
           </div>
         </div>
       </div>
-
-      <Footer />
     </div>
   );
 }

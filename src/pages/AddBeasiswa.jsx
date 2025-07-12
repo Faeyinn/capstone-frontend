@@ -2,8 +2,6 @@
 import { useNavigate, Link } from 'react-router-dom';
 import { useState } from 'react';
 import Swal from 'sweetalert2';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
 import { useAuth } from '../context/AuthContext';
 
 function AddBeasiswa() {
@@ -66,7 +64,6 @@ function AddBeasiswa() {
 
     return (
         <div>
-            <Navbar />
             <div
                 className="hero min-h-screen"
                 style={{
@@ -115,7 +112,6 @@ function AddBeasiswa() {
                     </div>
                 </div>
             </div>
-            <Footer />
         </div>
     );
 }

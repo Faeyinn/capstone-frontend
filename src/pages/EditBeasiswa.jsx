@@ -2,8 +2,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
-import Navbar from '../components/Navbar'; // Pastikan path ini benar
-import Footer from '../components/Footer'; // Pastikan path ini benar
 import { useAuth } from '../context/AuthContext';
 
 function EditBeasiswa() {
@@ -82,19 +80,16 @@ function EditBeasiswa() {
     if (!beasiswa) {
         return (
             <div>
-                <Navbar />
                 <div className="flex justify-center items-center min-h-screen">
                     <span className="loading loading-spinner loading-lg text-primary"></span>
                     <p className="text-xl text-gray-700 ml-4">Memuat data beasiswa...</p>
                 </div>
-                <Footer />
             </div>
         );
     }
 
     return (
         <div>
-            <Navbar />
             <div
                 className="hero min-h-screen"
                 style={{
@@ -139,7 +134,6 @@ function EditBeasiswa() {
                     </div>
                 </div>
             </div>
-            <Footer />
         </div>
     );
 }

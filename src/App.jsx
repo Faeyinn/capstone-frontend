@@ -10,10 +10,13 @@ import PrivateRoute from './components/PrivateRoute';
 import AdminRoute from './components/AdminRoute';
 import EditBeasiswa from './pages/EditBeasiswa';
 import AddBeasiswa from './pages/AddBeasiswa';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 
 function App() {
   return (
     <div className="App">
+      <Navbar />
       <Routes>
         <Route path="/" element={<Beranda />} />
         <Route path="/login" element={<Login />} />
@@ -33,6 +36,7 @@ function App() {
           <Route path="/add-beasiswa" element={<AddBeasiswa />} />
         </Route>
       </Routes>
+      <Footer />
     </div>
   );
 }

@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react'; // Import useEffect
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext'; // Import useAuth
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
 import Swal from 'sweetalert2';
 
 function Register() {
@@ -42,7 +40,6 @@ function Register() {
 
     return (
         <div>
-            <Navbar />
             <div
                 className="hero min-h-screen"
                 style={{
@@ -55,6 +52,7 @@ function Register() {
                     <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-white">
                         <form onSubmit={handleRegister} className="card-body">
                             <h2 className="text-3xl text-center font-bold text-primary mb-4">Register</h2>
+                            <h3 className="text-2xl font-serif text-primary text-center p-4">ScholarMatch</h3>
                             <div className="form-control">
                                 <label className="label">
                                     <span className="label-text text-black">Email</span>
@@ -105,7 +103,6 @@ function Register() {
                     </div>
                 </div>
             </div>
-            <Footer />
         </div>
     );
 }

@@ -1,6 +1,4 @@
 import { Link, useNavigate } from 'react-router-dom';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
 import { useAuth } from '../context/AuthContext';
 import Swal from 'sweetalert2';
 
@@ -31,7 +29,6 @@ function BerandaAdmin() {
 
     return (
         <div>
-            <Navbar />
             <div
                 className="hero min-h-screen"
                 style={{
@@ -48,7 +45,7 @@ function BerandaAdmin() {
                             
                             {/* Tombol untuk menambah beasiswa baru */}
                             <div className="flex justify-center mb-6">
-                                <Link to="/add-beasiswa" className="btn btn-info btn-md sm:btn-lg">Tambah Beasiswa Baru</Link>
+                                <Link to="/add-beasiswa" className="btn btn-info">Tambah Beasiswa Baru</Link>
                             </div>
 
                             <table className="table w-full mb-6 shadow-md rounded-lg">
@@ -85,7 +82,6 @@ function BerandaAdmin() {
                     </div>
                 </div>
             </div>
-            <Footer />
         </div>
     );
 }

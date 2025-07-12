@@ -1,6 +1,4 @@
 import { Link } from 'react-router-dom';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
 import { useAuth } from '../context/AuthContext';
 
 function ListBeasiswa() {
@@ -8,7 +6,6 @@ function ListBeasiswa() {
 
     return (
         <div>
-            <Navbar />
             <div
                 className="hero min-h-screen"
                 style={{
@@ -42,7 +39,6 @@ function ListBeasiswa() {
                     </div>
                 </div>
             </div>
-            <Footer />
         </div>
     )
 }

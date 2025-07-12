@@ -42,7 +42,7 @@ function SidebarAdmin() {
                         </label>
                     </div>
                     <div className="flex-1">
-                        <Link to="/" className="btn btn-ghost text-xl">ScholarMatch</Link>
+                        <Link to="/" className="btn btn-ghost text-xl font-serif">ScholarMatch</Link>
                     </div>
                     <div className="flex-none">
                         <ul className="menu menu-horizontal px-1">

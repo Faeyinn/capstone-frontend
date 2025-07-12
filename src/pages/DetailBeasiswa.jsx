@@ -1,6 +1,4 @@
 import { useParams, Link } from 'react-router-dom';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
 import { useAuth } from '../context/AuthContext'; // Import useAuth
 
 function DetailBeasiswa() {
@@ -12,22 +10,18 @@ function DetailBeasiswa() {
     if (!beasiswa) {
         return (
             <div>
-                <Navbar />
                 <div className="container mx-auto px-4 py-8">
                     <div className="text-center">
                         <h1 className="text-4xl font-bold mb-4">Beasiswa Tidak Ditemukan</h1>
                         <Link to="/list-beasiswa" className="btn btn-primary">Kembali ke Daftar Beasiswa</Link>
                     </div>
                 </div>
-                <Footer />
             </div>
         );
     }
 
     return (
         <div>
-            <Navbar />
-
             <div
                 className="hero min-h-screen"
                 style={{
@@ -36,7 +30,7 @@ function DetailBeasiswa() {
                 }}
             >
                 <div className="hero-overlay"></div>
-                <div className="hero-content text-neutral-content">
+                <div className="hero-content text-black">
                         <div className="container mx-auto px-4">
                             {/* Breadcrumb */}
                             <div className="breadcrumbs text-sm mb-6">
@@ -129,8 +123,6 @@ function DetailBeasiswa() {
                         </div>
                 </div>
             </div>
-
-            <Footer />
         </div>
     );
 }

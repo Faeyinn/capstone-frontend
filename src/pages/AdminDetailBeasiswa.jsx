@@ -1,6 +1,4 @@
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
 import { useAuth } from '../context/AuthContext';
 import { useState, useEffect } from 'react';
 import Swal from 'sweetalert2'
@@ -33,14 +31,12 @@ function AdminDetailBeasiswa() {
     if (!beasiswa) {
         return (
             <div>
-                <Navbar />
                 <div className="container mx-auto px-4 py-8">
                     <div className="text-center">
                         <h1 className="text-4xl font-bold mb-4">Beasiswa Tidak Ditemukan</h1>
                         <Link to="/beranda-admin" className="btn btn-primary">Kembali ke Beranda Admin</Link>
                     </div>
                 </div>
-                <Footer />
             </div>
         );
     }
@@ -98,8 +94,6 @@ function AdminDetailBeasiswa() {
 
     return (
         <div>
-            <Navbar />
-
             <div
                 className="hero min-h-screen"
                 style={{
@@ -108,14 +102,14 @@ function AdminDetailBeasiswa() {
                 }}
             >
                 <div className="hero-overlay"></div>
-                <div className="hero-content text-neutral-content">
+                <div className="hero-content text-black">
                     <div className="container mx-auto px-4">
                         <Link to="/beranda-admin" className="btn btn-accent m-4">Back</Link>
 
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                             {/* Main Content */}
                             <div className="lg:col-span-2">
-                                <div className="card bg-primary shadow-xl">
+                                <div className="card bg-primary text-black shadow-xl">
                                     <div className="card-body">
                                         <h1 className="card-title text-3xl mb-4">{beasiswa.nama}</h1>
 
@@ -166,7 +160,7 @@ function AdminDetailBeasiswa() {
                             </div>
 
                             {/* Sidebar */}
-                            <div className="lg:col-span-1">
+                            <div className="lg:col-span-1 text-black">
                                 <div className="card bg-base-100 shadow-xl">
                                     <div className="card-body">
                                         <h2 className="card-title mb-4">Aksi Cepat</h2>
@@ -193,8 +187,6 @@ function AdminDetailBeasiswa() {
                     </div>
                 </div>
             </div>
-
-            <Footer />
         </div>
     );
 }

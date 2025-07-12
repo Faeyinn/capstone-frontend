@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }) => {
             id: 1,
             nama: "Beasiswa SmartPath",
             jenjang: "S1",
-            deadline: "25 Desember 2025",
+            deadline: "2025-12-31",
             deskripsi: "Beasiswa SmartPath adalah program beasiswa yang ditujukan untuk mahasiswa berprestasi yang memiliki potensi untuk menjadi pemimpin masa depan. Program ini menyediakan dukungan penuh untuk pendidikan tinggi.",
             syarat: [
                 "IPK minimal 3.0",

@@ -90,7 +90,7 @@ function AddBeasiswa() {
                                     <input type="text" name="jenjang" className="input bg-white text-black border-gray-400 w-full" placeholder="Contoh: S1, S2, Umum, SMA" value={newBeasiswa.jenjang} onChange={handleInputChange} required />
 
                                     <label className="label text-black">Deadline</label>
-                                    <input type="text" name="deadline" className="input bg-white text-black border-gray-400 w-full" placeholder="Contoh: 25 Desember 2025" value={newBeasiswa.deadline} onChange={handleInputChange} required />
+                                    <input type="date" name="deadline" className="input bg-white text-black border-gray-400 w-full" value={newBeasiswa.deadline} onChange={handleInputChange} required />
 
                                     <label className="label text-black">Deskripsi Singkat</label>
                                     <textarea name="deskripsi" className="textarea bg-white text-black border-gray-400 w-full" placeholder="Deskripsi Singkat tentang beasiswa ini..." value={newBeasiswa.deskripsi} onChange={handleInputChange} required></textarea>

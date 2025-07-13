@@ -12,6 +12,8 @@ import EditBeasiswa from './pages/EditBeasiswa';
 import AddBeasiswa from './pages/AddBeasiswa';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import Notfound from './pages/Notfound';
+import BookmarkPages from './pages/BookmarkPage';
 
 function App() {
   return (
@@ -21,11 +23,13 @@ function App() {
         <Route path="/" element={<Beranda />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="*" element={<Notfound />} />
 
         {/* Rute yang hanya dapat diakses setelah user login */}
         <Route element={<PrivateRoute />}>
           <Route path="/list-beasiswa" element={<ListBeasiswa />} />
           <Route path="/detail-beasiswa/:id" element={<DetailBeasiswa />} />
+          <Route path="/list-bookmark" element={<BookmarkPages />} />
         </Route>
 
         {/* Rute yang hanya dapat diakses setelah admin login */}

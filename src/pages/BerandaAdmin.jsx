@@ -29,18 +29,10 @@ function BerandaAdmin() {
 
     return (
         <div>
-            <div
-                className="hero min-h-screen"
-                style={{
-                    backgroundImage:
-                        "url(https://ik.imagekit.io/xf0h05qpxc/Unand.jpg?updatedAt=1750638177955)",
-                }}
-            >
-                <div className="hero-overlay"></div>
+            <div className="hero min-h-screen">
                 <div className="hero-content text-neutral-content w-full">
                     <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 w-full">
-
-                        <h1 className="mt-8 mb-8 text-3xl sm:text-4xl lg:text-5xl text-center font-bold">Daftar Beasiswa</h1> {/* Sesuaikan ukuran teks */}
+                        <h1 className="mt-8 mb-8 text-3xl sm:text-4xl lg:text-5xl text-center text-primary font-bold">Daftar Beasiswa</h1> {/* Sesuaikan ukuran teks */}
                         <div className="overflow-x-auto rounded-box border border-base-content/5 bg-white bg-opacity-80 p-4 sm:p-6 shadow-lg"> {/* Sesuaikan padding */}
                             
                             {/* Tombol untuk menambah beasiswa baru */}

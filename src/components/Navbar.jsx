@@ -63,7 +63,7 @@ function SidebarAdmin() {
                                 <>
                                     <Menu as="div" className="ml-4 relative inline-block text-left">
                                         <div>
-                                            <MenuButton className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-primary px-3 py-2 text-white-100 ring-1 ring-gray-300 ring-inset hover:cursor-pointer">
+                                            <MenuButton className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-primary px-3 py-2 text-white-100 ring-1 ring-gray-500 ring-inset hover:cursor-pointer">
                                                 <li>
                                                     Hello
                                                 </li>
@@ -80,12 +80,12 @@ function SidebarAdmin() {
                                         >
                                             <div className="py-1">
                                                 <MenuItem>
-                                                    <a
-                                                        href="#"
+                                                    <Link
+                                                        to="/account-setting"
                                                         className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden"
                                                     >
                                                         Account settings
-                                                    </a>
+                                                    </Link>
                                                 </MenuItem>
                                                 <MenuItem>
                                                     <button
@@ -134,12 +134,12 @@ function SidebarAdmin() {
                                 >
                                     <div className="py-1">
                                         <MenuItem>
-                                            <a
-                                                href="#"
+                                            <Link
+                                                to="/account-setting"
                                                 className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden"
                                             >
                                                 Account settings
-                                            </a>
+                                            </Link>
                                         </MenuItem>
                                         <MenuItem>
                                             <button
@@ -158,7 +158,8 @@ function SidebarAdmin() {
                     <li><Link to="/">Beranda</Link></li>
                     {isAuthenticated && userRole === 'user' && (
                         <>
-                        <li><Link to="/list-beasiswa">Daftar Beasiswa</Link></li>
+                            <li><Link to="/list-beasiswa">List Beasiswa</Link></li>
+                            <li><Link to="/list-bookmark">List Bookmark</Link></li>
                             <button onClick={handleLogout} className="btn btn-info m-4">Logout</button>
                         </>
                         

@@ -39,14 +39,7 @@ function Login() {
 
     return (
         <div>
-            <div
-                className="hero min-h-screen"
-                style={{
-                    backgroundImage:
-                        "url(https://ik.imagekit.io/xf0h05qpxc/Unand.jpg?updatedAt=1750638177955)",
-                }}
-            >
-                <div className="hero-overlay"></div>
+            <div className="hero min-h-screen">
                 <div className="hero-content text-neutral-content">
                     <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-white">
                         <form onSubmit={handleSubmit} className="card-body">

@@ -64,19 +64,12 @@ function AddBeasiswa() {
 
     return (
         <div>
-            <div
-                className="hero min-h-screen"
-                style={{
-                    backgroundImage:
-                        "url(https://ik.imagekit.io/xf0h05qpxc/Unand.jpg?updatedAt=1750638177955)",
-                }}
-            >
-                <div className="hero-overlay"></div>
+            <div className="hero min-h-screen">
                 <div className="hero-content text-neutral-content">
                     <div className="max-w-4xl mx-auto p-6">
-                        <h1 className="mt-8 mb-8 text-5xl text-center font-bold">Tambah Beasiswa Baru</h1>
-                        <div className="bg-white bg-opacity-80 rounded-lg p-8">
-                            <Link to="/beranda-admin" className="btn btn-accent m-4">Back</Link>
+                        <h1 className="mt-8 mb-8 text-5xl text-center text-primary font-bold">Tambah Beasiswa Baru</h1>
+                        <div className="bg-primary rounded-lg shadow-lg p-8">
+                            <Link to="/beranda-admin" className="btn btn-accent mb-4">Back</Link>
                             <fieldset className="fieldset bg-white shadow-xl rounded-box w-full max-w-lg border p-4">
                                 <h2 className="text-xl text-black font-bold mb-4 text-center">Isi Detail Beasiswa</h2>
                                 <form onSubmit={handleSubmit}>
@@ -105,7 +98,7 @@ function AddBeasiswa() {
                                     <textarea name="benefit" className="textarea bg-white text-black border-gray-400 w-full" placeholder="Benefit 1, Benefit 2, ..." value={newBeasiswa.benefit} onChange={handleInputChange} required></textarea>
 
                                     <button type="submit" className="btn btn-success mt-4 w-full">Tambah Beasiswa</button>
-                                    <button type="button" onClick={() => navigate('/beranda-admin')} className="btn btn-ghost mt-2 w-full">Batal</button>
+                                    <button type="button" onClick={() => navigate('/beranda-admin')} className="btn mt-2 w-full">Batal</button>
                                 </form>
                             </fieldset>
                         </div>

@@ -6,18 +6,11 @@ function ListBeasiswa() {
 
     return (
         <div>
-            <div
-                className="hero min-h-screen"
-                style={{
-                    backgroundImage:
-                        "url(https://ik.imagekit.io/xf0h05qpxc/Unand.jpg?updatedAt=1750638177955)",
-                }}
-            >
-                <div className="hero-overlay"></div>
+            <div className="hero min-h-screen">
                 <div className="hero-content text-neutral-content">
-                    <div className="max-w-7xl mx-auto p-6">
-                        <h1 className="mb-8 text-5xl text-center font-bold">Daftar Beasiswa</h1>
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div className="w-2xl lg:w-3xl mx-auto p-6">
+                        <h1 className="mb-8 text-5xl text-center text-primary font-bold">Daftar Beasiswa</h1>
+                        <div className="gap-8">
                             {beasiswaList.map((beasiswa) => (
                                 <div key={beasiswa.id} className="card bg-white shadow-xl">
                                     <div className="card-body">

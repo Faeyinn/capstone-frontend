@@ -1,15 +1,13 @@
-// src/pages/EditBeasiswa.jsx
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import { useAuth } from '../context/AuthContext';
 
 function EditBeasiswa() {
-    const { id } = useParams(); // Mengambil ID dari URL
+    const { id } = useParams();
     const navigate = useNavigate();
     const { beasiswaList, editBeasiswa } = useAuth();
 
-    // Temukan beasiswa berdasarkan ID
     const beasiswa = beasiswaList.find(b => b.id === parseInt(id));
 
     const [editFormData, setEditFormData] = useState({
@@ -90,18 +88,14 @@ function EditBeasiswa() {
 
     return (
         <div>
-            <div
-                className="hero min-h-screen"
-                style={{
-                    backgroundImage:
-                        "url(https://ik.imagekit.io/xf0h05qpxc/Unand.jpg?updatedAt=1750638177955)",
-                }}
-            >
-                <div className="hero-overlay"></div>
+            <div className="hero min-h-screen">
                 <div className="hero-content text-neutral-content">
                     <div className="max-w-4xl mx-auto p-6">
-                        <h1 className="mt-8 mb-8 text-5xl text-center font-bold">Edit Beasiswa: {beasiswa.nama}</h1>
-                        <div className="flex justify-center items-center bg-white bg-opacity-80 rounded-lg p-8">
+                        <h1 className="mt-8 mb-8 text-5xl text-center text-primary font-bold">Edit Beasiswa: {beasiswa.nama}</h1>
+                        <div className="flex flex-col items-center justify-center bg-primary rounded-lg p-8 shadow-lg">
+                            <div className='w-full ml-25'>
+                                <Link to="/beranda-admin" className="btn btn-accent m-4">Back</Link>
+                            </div>
                             <fieldset className="fieldset bg-white shadow-xl rounded-box w-full max-w-lg border p-4">
                                 <h2 className="text-xl text-black font-bold mb-4 text-center">Formulir Edit</h2>
                                 <form onSubmit={handleSaveEdit}>
@@ -127,7 +121,7 @@ function EditBeasiswa() {
                                     <textarea name="benefit" className="textarea bg-white text-black border-gray-400 w-full" placeholder="Benefit 1, Benefit 2, ..." value={editFormData.benefit} onChange={handleEditFormChange} required></textarea>
 
                                     <button type="submit" className="btn btn-success mt-4 w-full">Simpan Perubahan</button>
-                                    <button type="button" onClick={() => navigate('/beranda-admin')} className="btn btn-ghost mt-2 w-full">Batal</button>
+                                    <button type="button" onClick={() => navigate('/beranda-admin')} className="btn mt-2 w-full">Batal</button>
                                 </form>
                             </fieldset>
                         </div>

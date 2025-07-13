@@ -94,23 +94,18 @@ function AdminDetailBeasiswa() {
 
     return (
         <div>
-            <div
-                className="hero min-h-screen"
-                style={{
-                    backgroundImage:
-                        "url(https://ik.imagekit.io/xf0h05qpxc/Unand.jpg?updatedAt=1750638177955)",
-                }}
-            >
-                <div className="hero-overlay"></div>
+            <div className="hero min-h-screen">
                 <div className="hero-content text-black">
                     <div className="container mx-auto px-4">
-                        <Link to="/beranda-admin" className="btn btn-accent m-4">Back</Link>
-
+                        <h1 className="mt-8 mb-8 text-5xl text-center text-primary font-bold">Detail Beasiswa</h1>
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                             {/* Main Content */}
                             <div className="lg:col-span-2">
                                 <div className="card bg-primary text-black shadow-xl">
                                     <div className="card-body">
+                                        <div>
+                                            <Link to="/beranda-admin" className="btn btn-accent">Back</Link>
+                                        </div>
                                         <h1 className="card-title text-3xl mb-4">{beasiswa.nama}</h1>
 
                                         <div className="grid grid-cols-2 gap-4 mb-6">

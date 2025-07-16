@@ -1,6 +1,11 @@
-import React, { createContext, useState, useContext, useEffect } from 'react'; // Tambahkan useEffect
+import React, { createContext, useState, useContext, useEffect } from 'react';
+import axios from 'axios';
+import Swal from 'sweetalert2';
+import { jwtDecode } from 'jwt-decode';
 
 const AuthContext = createContext(null);
+
+const API_BASE_URL = 'http://localhost:3100/api';
 
 export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);

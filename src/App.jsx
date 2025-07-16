@@ -17,7 +17,7 @@ import BookmarkPages from './pages/BookmarkPage';
 
 function App() {
   return (
-    <div className="App">
+    <div className="App overflow-x-hidden">
       <Navbar />
       <Routes>
         <Route path="/" element={<Beranda />} />

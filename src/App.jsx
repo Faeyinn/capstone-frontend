@@ -4,7 +4,8 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import ListBeasiswa from './pages/ListBeasiswa';
 import DetailBeasiswa from './pages/DetailBeasiswa';
-import BerandaAdmin from './pages/BerandaAdmin';
+import DashboardAdmin from './pages/DashboardAdmin';
+import KelolaBeasiswa from './pages/KelolaBeasiswa';
 import AdminDetailBeasiswa from './pages/AdminDetailBeasiswa';
 import PrivateRoute from './components/PrivateRoute';
 import AdminRoute from './components/AdminRoute';
@@ -14,10 +15,11 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Notfound from './pages/Notfound';
 import BookmarkPages from './pages/BookmarkPage';
+import KelolaUser from './pages/KelolaUser';
 
 function App() {
   return (
-    <div className="App overflow-x-hidden">
+    <div className="App overflow-x-hidden overflow-y-hidden">
       <Navbar />
       <Routes>
         <Route path="/" element={<Beranda />} />
@@ -34,7 +36,9 @@ function App() {
 
         {/* Rute yang hanya dapat diakses setelah admin login */}
         <Route element={<AdminRoute />}>
-          <Route path="/beranda-admin" element={<BerandaAdmin />} />
+          <Route path="/beranda-admin" element={<DashboardAdmin />} />
+          <Route path="/kelola-beasiswa" element={<KelolaBeasiswa />} />
+          <Route path="/kelola-user" element={<KelolaUser />} />
           <Route path="/admin-detail-beasiswa/:id" element={<AdminDetailBeasiswa />} />
           <Route path="/edit-beasiswa/:id" element={<EditBeasiswa />} />
           <Route path="/add-beasiswa" element={<AddBeasiswa />} />

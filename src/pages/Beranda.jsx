@@ -4,7 +4,7 @@ function Beranda() {
   return (
     <div>
       <div
-        className="hero min-h-screen"
+        className="hero min-h-screen bg-base-100"
         style={{
           backgroundImage:
             "url(https://ik.imagekit.io/xf0h05qpxc/Unand.jpg?updatedAt=1750638177955)",

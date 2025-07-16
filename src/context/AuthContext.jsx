@@ -39,7 +39,7 @@ export const AuthProvider = ({ children }) => {
                 "Surat rekomendasi dari dosen"
             ]
         },
-        { // Tambahkan beberapa beasiswa lagi agar ada yang bisa di-bookmark
+        {
             id: 2,
             nama: "Beasiswa Global Leader",
             jenjang: "S2",
@@ -61,8 +61,6 @@ export const AuthProvider = ({ children }) => {
         }
     ]);
 
-    // Tambahkan state untuk ID beasiswa yang di-bookmark
-    // Inisialisasi dari Local Storage jika ada, agar bookmark tidak hilang saat refresh
     const [bookmarkedScholarshipIds, setBookmarkedScholarshipIds] = useState(() => {
         try {
             const storedBookmarks = localStorage.getItem('bookmarkedScholarshipIds');
@@ -84,10 +82,17 @@ export const AuthProvider = ({ children }) => {
 
 
     const users = [
+        { email: 'fajar.saputra2907@gmail.com', password: 'aaaa', role: 'admin' },
         { email: 'halo@admin.com', password: 'adminpassword', role: 'admin' },
+        { email: 'rahmat.fajar2907@gmail.com', password: 'aaaa', role: 'user' },
         { email: 'halo@user.com', password: 'userpassword', role: 'user' },
-        { email: 'desfriemilda13@gmail.com', password: 'aaaa', role: 'admin' },
     ];
+
+    const [usersState, setUsersState] = useState(users);
+
+    const deleteUser = (email) => {
+        setUsersState(prev => prev.filter(user => user.email !== email));
+    };
 
     const login = (email, password) => {
         const foundUser = users.find(user => user.email === email && user.password === password);
@@ -152,8 +157,10 @@ export const AuthProvider = ({ children }) => {
             addBeasiswa,
             editBeasiswa,
             deleteBeasiswa,
-            bookmarkedScholarshipIds, // Tambahkan ini
-            toggleBookmark // Tambahkan ini
+            bookmarkedScholarshipIds,
+            toggleBookmark,
+            users: usersState,
+            deleteUser,
         }}>
             {children}
         </AuthContext.Provider>

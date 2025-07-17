@@ -18,9 +18,9 @@ function ListBeasiswa() {
                                 return (
                                     <div key={beasiswa.id} className="card bg-white shadow-xl">
                                         <div className="card-body p-4">
-                                            <h2 className="card-title text-gray-800">{beasiswa.nama}</h2>
-                                            <p className="text-gray-600 text-sm">Jenjang Pendidikan: {beasiswa.jenjang}</p>
-                                            <p className="text-gray-600 text-sm">Deadline: {beasiswa.deadline}</p>
+                                            <h2 className="card-title text-gray-800">{beasiswa.name}</h2>
+                                            <p className="text-gray-600 text-sm">Penyedia: {beasiswa.provider}</p>
+                                            <p className="text-gray-600 text-sm">Deadline: {new Date(beasiswa.deadline).toLocaleDateString()}</p>
                                             <div className="card-actions justify-end mt-4">
                                                 <Link
                                                     to={`/detail-beasiswa/${beasiswa.id}`}

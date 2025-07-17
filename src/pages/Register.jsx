@@ -10,33 +10,39 @@ function Register() {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
-    const { isAuthenticated, userRole } = useAuth(); 
+    const { register } = useAuth();
 
-    useEffect(() => {
-        if (isAuthenticated) { 
-            if (userRole === 'admin') {
-                navigate('/beranda-admin', { replace: true }); 
-            } else if (userRole === 'user') {
-                navigate('/list-beasiswa', { replace: true }); 
-            }
-        }
-    }, [isAuthenticated, userRole, navigate]); 
-
-    const handleRegister = (e) => {
+    const handleRegister = async (e) => {
         e.preventDefault();
         setError('');
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            setError('Format email tidak valid.');
+            return;
+        }
+
+        if (password.length < 4) {
+            setError('Password minimal 4 karakter.');
+            return;
+        }
 
         if (password !== confirmPassword) {
             setError('Password dan konfirmasi password tidak cocok.');
             return;
         }
 
-        Swal.fire({
-            title: "Selamat !",
-            text: "Registrasi berhasil, silahkan login !",
-            icon: "success"
-        });
-        navigate('/login');
+        const registerSuccess = await register(email, password);
+        if (registerSuccess) {
+            Swal.fire({
+                title: "Selamat !",
+                text: "Registrasi berhasil, silahkan login !",
+                icon: "success"
+            });
+            navigate('/login');
+        } else {
+            setError('Registrasi gagal. Email mungkin sudah digunakan.');
+        }
     };
 
     return (
@@ -45,8 +51,8 @@ function Register() {
                 <div className="hero-content text-neutral-content">
                     <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-white">
                         <form onSubmit={handleRegister} className="card-body">
-                            <h2 className="text-3xl text-center font-bold text-primary mb-4">Register</h2>
-                            <h3 className="text-2xl font-serif text-primary text-center p-4">ScholarMatch</h3>
+                            <h2 className="text-3xl font-bold text-center text-primary mb-2">Register</h2>
+                            <h3 className="text-xl font-serif text-primary text-center mb-4">ScholarMatch</h3>
                             <div className="form-control">
                                 <label className="label">
                                     <span className="label-text text-black">Email</span>

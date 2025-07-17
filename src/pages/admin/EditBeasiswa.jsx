@@ -1,8 +1,8 @@
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import { useAuth } from '../../context/AuthContext';
-import PageTransition from '../../components/PageTransition'
+import PageTransition from '../../components/PageTransition';
 
 function EditBeasiswa() {
     const { id } = useParams();
@@ -13,26 +13,26 @@ function EditBeasiswa() {
 
     const [editFormData, setEditFormData] = useState({
         id: null,
-        nama: "",
-        jenjang: "",
+        name: "",
+        provider: "",
         deadline: "",
-        deskripsi: "",
-        syarat: "",
-        benefit: "",
-        dokumen: ""
+        description: "",
+        requirements: "",
+        documents: "",
+        benefit: ""
     });
 
     useEffect(() => {
         if (beasiswa) {
             setEditFormData({
                 id: beasiswa.id,
-                nama: beasiswa.nama,
-                jenjang: beasiswa.jenjang,
+                name: beasiswa.name,
+                provider: beasiswa.provider,
                 deadline: beasiswa.deadline,
-                deskripsi: beasiswa.deskripsi,
-                syarat: beasiswa.syarat.join(', '),
-                benefit: beasiswa.benefit.join(', '),
-                dokumen: beasiswa.dokumen.join(', ')
+                description: beasiswa.description,
+                requirements: beasiswa.requirements,
+                documents: beasiswa.documents,
+                benefit: beasiswa.benefit || ""
             });
         } else {
             Swal.fire({
@@ -52,32 +52,29 @@ function EditBeasiswa() {
         }));
     };
 
-    const handleSaveEdit = (e) => {
+    const handleSaveEdit = async (e) => {
         e.preventDefault();
-        const updatedBeasiswa = {
-            id: editFormData.id,
-            nama: editFormData.nama,
-            jenjang: editFormData.jenjang,
-            deadline: editFormData.deadline,
-            deskripsi: editFormData.deskripsi,
-            syarat: editFormData.syarat.split(',').map(item => item.trim()).filter(item => item !== ''),
-            benefit: editFormData.benefit.split(',').map(item => item.trim()).filter(item => item !== ''),
-            dokumen: editFormData.dokumen.split(',').map(item => item.trim()).filter(item => item !== '')
-        };
-
-        editBeasiswa(updatedBeasiswa);
-        Swal.fire({
-            title: "Sukses!",
-            text: "Beasiswa berhasil diupdate!",
-            icon: "success"
-        }).then(() => {
-            navigate('/beranda-admin');
-        });
+        const success = await editBeasiswa(editFormData);
+        if (success) {
+            Swal.fire({
+                title: "Sukses!",
+                text: "Beasiswa berhasil diupdate!",
+                icon: "success"
+            }).then(() => {
+                navigate('/beranda-admin');
+            });
+        } else {
+            Swal.fire({
+                title: "Gagal!",
+                text: "Gagal mengedit beasiswa.",
+                icon: "error"
+            });
+        }
     };
 
     const handleBack = () => {
-        navigate(-1)
-    }
+        navigate(-1);
+    };
 
     if (!beasiswa) {
         return (
@@ -92,43 +89,91 @@ function EditBeasiswa() {
 
     return (
         <PageTransition>
-            <div className="hero min-h-screen">
-                <div className="hero-content text-neutral-content">
-                    <div className="max-w-4xl mx-auto p-6">
-                        <h1 className="mt-8 mb-8 text-5xl text-center text-primary font-bold">Edit Beasiswa: {beasiswa.nama}</h1>
-                        <div className="flex flex-col items-center justify-center bg-primary rounded-lg p-8 shadow-lg">
-                            <div className='w-full ml-25'>
-                                <button onClick={handleBack} className="btn btn-accent m-4">Back</button>
-                            </div>
-                            <fieldset className="fieldset bg-white shadow-xl rounded-box w-full max-w-lg border p-4">
-                                <h2 className="text-xl text-black font-bold mb-4 text-center">Formulir Edit</h2>
-                                <form onSubmit={handleSaveEdit}>
-                                    <label className="label text-black">Nama Beasiswa</label>
-                                    <input type="text" name="nama" className="input bg-white text-black border-gray-400 w-full" placeholder="Nama Beasiswa" value={editFormData.nama} onChange={handleEditFormChange} required />
-
-                                    <label className="label text-black">Jenjang Pendidikan</label>
-                                    <input type="text" name="jenjang" className="input bg-white text-black border-gray-400 w-full" placeholder="Jenjang Pendidikan" value={editFormData.jenjang} onChange={handleEditFormChange} required />
-
-                                    <label className="label text-black">Deadline</label>
-                                    <input type="text" name="deadline" className="input bg-white text-black border-gray-400 w-full" placeholder="Deadline (contoh: 25 Desember 2025)" value={editFormData.deadline} onChange={handleEditFormChange} required />
-
-                                    <label className="label text-black">Deskripsi Singkat</label>
-                                    <textarea name="deskripsi" className="textarea bg-white text-black border-gray-400 w-full" placeholder="Deskripsi Singkat" value={editFormData.deskripsi} onChange={handleEditFormChange} required></textarea>
-
-                                    <label className="label text-black">Persyaratan (pisahkan dengan koma)</label>
-                                    <textarea name="syarat" className="textarea bg-white text-black border-gray-400 w-full" placeholder="Syarat 1, Syarat 2, ..." value={editFormData.syarat} onChange={handleEditFormChange} required></textarea>
-
-                                    <label className="label text-black">Dokumen (pisahkan dengan koma)</label>
-                                    <textarea name="dokumen" className="textarea bg-white text-black border-gray-400 w-full" placeholder="Dokumen 1, Dokumen 2, ..." value={editFormData.dokumen} onChange={handleEditFormChange} required></textarea>
-
-                                    <label className="label text-black">Benefit (pisahkan dengan koma)</label>
-                                    <textarea name="benefit" className="textarea bg-white text-black border-gray-400 w-full" placeholder="Benefit 1, Benefit 2, ..." value={editFormData.benefit} onChange={handleEditFormChange} required></textarea>
-
-                                    <button type="submit" className="btn btn-success mt-4 w-full">Simpan Perubahan</button>
-                                    <button type="button" onClick={handleBack} className="btn mt-2 w-full">Batal</button>
-                                </form>
-                            </fieldset>
+            <div className="hero min-h-screen bg-base-100">
+                <div className="hero-content flex-col lg:flex-row-reverse w-full">
+                    <div className="w-full max-w-2xl mx-auto bg-white rounded-2xl shadow-xl p-8">
+                        <div className="flex items-center justify-between mb-6">
+                            <h1 className="text-3xl font-bold text-primary">Edit Beasiswa</h1>
+                            <button onClick={handleBack} className="btn btn-accent">Kembali</button>
                         </div>
+                        <form onSubmit={handleSaveEdit} className="space-y-4">
+                            <div>
+                                <label className="label text-black font-semibold">Nama Beasiswa</label>
+                                <input
+                                    type="text"
+                                    name="name"
+                                    className="input input-bordered w-full bg-base-100 text-black"
+                                    value={editFormData.name}
+                                    onChange={handleEditFormChange}
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label className="label text-black font-semibold">Penyedia Beasiswa</label>
+                                <input
+                                    type="text"
+                                    name="provider"
+                                    className="input input-bordered w-full bg-base-100 text-black"
+                                    value={editFormData.provider}
+                                    onChange={handleEditFormChange}
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label className="label text-black font-semibold">Deadline</label>
+                                <input
+                                    type="date"
+                                    name="deadline"
+                                    className="input input-bordered w-full bg-base-100 text-black"
+                                    value={editFormData.deadline}
+                                    onChange={handleEditFormChange}
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label className="label text-black font-semibold">Deskripsi Singkat</label>
+                                <textarea
+                                    name="description"
+                                    className="textarea textarea-bordered w-full bg-base-100 text-black"
+                                    value={editFormData.description}
+                                    onChange={handleEditFormChange}
+                                    required
+                                ></textarea>
+                            </div>
+                            <div>
+                                <label className="label text-black font-semibold">Persyaratan (pisahkan dengan enter)</label>
+                                <textarea
+                                    name="requirements"
+                                    className="textarea textarea-bordered w-full bg-base-100 text-black"
+                                    value={editFormData.requirements}
+                                    onChange={handleEditFormChange}
+                                    required
+                                ></textarea>
+                            </div>
+                            <div>
+                                <label className="label text-black font-semibold">Dokumen (pisahkan dengan enter)</label>
+                                <textarea
+                                    name="documents"
+                                    className="textarea textarea-bordered w-full bg-base-100 text-black"
+                                    value={editFormData.documents}
+                                    onChange={handleEditFormChange}
+                                    required
+                                ></textarea>
+                            </div>
+                            <div>
+                                <label className="label text-black font-semibold">Benefit (pisahkan dengan enter)</label>
+                                <textarea
+                                    name="benefit"
+                                    className="textarea textarea-bordered w-full bg-base-100 text-black"
+                                    value={editFormData.benefit}
+                                    onChange={handleEditFormChange}
+                                ></textarea>
+                            </div>
+                            <div className="flex flex-col gap-3 mt-6">
+                                <button type="submit" className="btn btn-success w-full">Simpan Perubahan</button>
+                                <button type="button" onClick={handleBack} className="btn w-full">Batal</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

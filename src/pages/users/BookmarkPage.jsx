@@ -30,10 +30,9 @@ function BookmarkPages() {
                             <div className="grid gap-6">
                                 {bookmarkedScholarships.map((beasiswa) => (
                                     <div key={beasiswa.id} className="border border-gray-200 rounded-lg p-4 bg-base-100 shadow-sm">
-                                        <h3 className="text-lg font-bold text-gray-800 mb-1">{beasiswa.nama}</h3>
-                                        <p className="text-sm text-gray-600">Jenjang: {beasiswa.jenjang}</p>
-                                        <p className="text-sm text-gray-600">Deadline: {beasiswa.deadline}</p>
-
+                                        <h3 className="text-lg font-bold text-gray-800 mb-1">{beasiswa.name}</h3>
+                                        <p className="text-sm text-gray-600">Penyedia: {beasiswa.provider}</p>
+                                        <p className="text-sm text-gray-600">Deadline: {new Date(beasiswa.deadline).toLocaleDateString()}</p>
                                         <div className="mt-4 flex gap-2 justify-end">
                                             <Link to={`/detail-beasiswa/${beasiswa.id}`} className="btn btn-primary btn-sm">
                                                 Lihat Detail

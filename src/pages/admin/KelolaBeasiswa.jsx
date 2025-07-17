@@ -8,7 +8,7 @@ function KelolaBeasiswa() {
     const navigate = useNavigate();
     const { beasiswaList, deleteBeasiswa } = useAuth();
 
-    const handleDelete = (beasiswaId) => {
+    const handleDelete = async (beasiswaId) => {
         Swal.fire({
             title: "Anda yakin?",
             text: "Anda tidak akan dapat mengembalikan ini!",
@@ -17,14 +17,22 @@ function KelolaBeasiswa() {
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Ya, hapus!"
-        }).then((result) => {
+        }).then(async (result) => {
             if (result.isConfirmed) {
-                deleteBeasiswa(beasiswaId);
-                Swal.fire({
-                    title: "Dihapus!",
-                    text: "Beasiswa telah dihapus.",
-                    icon: "success"
-                });
+                const success = await deleteBeasiswa(beasiswaId);
+                if (success) {
+                    Swal.fire({
+                        title: "Dihapus!",
+                        text: "Beasiswa telah dihapus.",
+                        icon: "success"
+                    });
+                } else {
+                    Swal.fire({
+                        title: "Gagal!",
+                        text: "Gagal menghapus beasiswa.",
+                        icon: "error"
+                    });
+                }
             }
         });
     };
@@ -58,7 +66,7 @@ function KelolaBeasiswa() {
                                     <thead className="bg-primary text-white text-left">
                                         <tr>
                                             <th className="p-3">Nama Beasiswa</th>
-                                            <th className="p-3">Jenjang</th>
+                                            <th className="p-3">Penyedia</th>
                                             <th className="p-3">Deadline</th>
                                             <th className="p-3">Aksi</th>
                                         </tr>
@@ -67,9 +75,9 @@ function KelolaBeasiswa() {
                                         {beasiswaList.length > 0 ? (
                                             beasiswaList.map((beasiswa) => (
                                                 <tr key={beasiswa.id} className="hover:bg-gray-100 text-gray-800">
-                                                    <td className="p-3">{beasiswa.nama}</td>
-                                                    <td className="p-3">{beasiswa.jenjang}</td>
-                                                    <td className="p-3">{beasiswa.deadline}</td>
+                                                    <td className="p-3">{beasiswa.name}</td>
+                                                    <td className="p-3">{beasiswa.provider}</td>
+                                                    <td className="p-3">{new Date(beasiswa.deadline).toLocaleDateString()}</td>
                                                     <td className="p-3">
                                                         <div className="flex flex-wrap gap-2">
                                                             <Link to={`/admin-detail-beasiswa/${beasiswa.id}`} className="btn btn-xs sm:btn-sm btn-primary">Detail</Link>

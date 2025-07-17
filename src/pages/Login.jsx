@@ -1,39 +1,41 @@
-import { useState, useEffect } from 'react'; // Import useEffect
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import Swal from 'sweetalert2';
-import PageTransition from '../components/PageTransition'
+import PageTransition from '../components/PageTransition';
 
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
-    const { login, isAuthenticated, userRole } = useAuth(); // Ambil isAuthenticated dan userRole
+    const { login, isAuthenticated, userRole } = useAuth();
 
     useEffect(() => {
-        if (isAuthenticated) { // Jika sudah terautentikasi
+        if (isAuthenticated) {
             if (userRole === 'admin') {
-                navigate('/beranda-admin', { replace: true }); // Redirect ke admin, replace history
+                navigate('/beranda-admin', { replace: true });
             } else if (userRole === 'user') {
-                navigate('/list-beasiswa', { replace: true }); // Redirect ke list beasiswa, replace history
+                navigate('/list-beasiswa', { replace: true });
             }
         }
-    }, [isAuthenticated, userRole, navigate]); // Dependensi useEffect
+    }, [isAuthenticated, userRole, navigate]);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
 
-        const loginSuccess = login(email, password);
+        const loginSuccess = await login(email, password);
 
-        if (!loginSuccess) { // Hanya set error jika login gagal
+        if (!loginSuccess) {
             setError('Email atau password salah.');
         } else {
             Swal.fire({
-                title: "Selamat !",
-                text: "Kamu berhasil Login!",
-                icon: "success"
+                title: 'Selamat!',
+                text: 'Kamu berhasil login!',
+                icon: 'success',
+                timer: 2000,
+                showConfirmButton: false
             });
         }
     };
@@ -42,10 +44,11 @@ function Login() {
         <PageTransition>
             <div className="hero min-h-screen">
                 <div className="hero-content text-neutral-content">
-                    <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-white">
+                    <div className="card w-full max-w-sm shadow-2xl bg-white">
                         <form onSubmit={handleSubmit} className="card-body">
-                            <h2 className="text-3xl text-center font-bold text-primary mb-4">Login</h2>
-                            <h3 className="text-2xl font-serif text-primary text-center p-4">ScholarMatch</h3>
+                            <h2 className="text-3xl font-bold text-center text-primary mb-2">Login</h2>
+                            <h3 className="text-xl font-serif text-primary text-center mb-4">ScholarMatch</h3>
+
                             <div className="form-control">
                                 <label className="label">
                                     <span className="label-text text-black">Email</span>
@@ -59,6 +62,7 @@ function Login() {
                                     required
                                 />
                             </div>
+
                             <div className="form-control">
                                 <label className="label">
                                     <span className="label-text text-black">Password</span>
@@ -72,24 +76,25 @@ function Login() {
                                     required
                                 />
                                 <label className="label">
-                                    <a href="#" className="label-text-alt link link-hover text-black">
-                                        Forgot password?
-                                    </a>
+                                    <span className="label-text-alt link link-hover text-black">Lupa password?</span>
                                 </label>
                             </div>
-                            {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-                            <div className="form-control mt-6">
-                                <button type="submit" className="btn btn-primary w-full">Login</button>
+
+                            {error && (
+                                <p className="text-red-500 text-sm mt-2 text-center">{error}</p>
+                            )}
+
+                            <div className="form-control mt-4">
+                                <button type="submit" className="btn btn-primary w-full">
+                                    Login
+                                </button>
                             </div>
-                            <p className="text-center text-black mt-4">
-                                Belum punya akun? <Link to="/register" className="link link-hover text-blue-500">Daftar di sini</Link>
-                            </p>
-                            <p className="text-center text-black mt-2">
-                                <span className="font-bold">Demo Akun:</span>
-                                <br />
-                                Admin: halo@admin.com / adminpassword
-                                <br />
-                                User: halo@user.com / userpassword
+
+                            <p className="text-center text-black mt-4 text-sm">
+                                Belum punya akun?{' '}
+                                <Link to="/register" className="link text-blue-500 font-medium">
+                                    Daftar di sini
+                                </Link>
                             </p>
                         </form>
                     </div>

@@ -4,74 +4,80 @@ import Swal from 'sweetalert2';
 import { jwtDecode } from 'jwt-decode';
 
 const AuthContext = createContext(null);
-
-const API_BASE_URL = 'http://localhost:3100/api';
+const API_BASE_URL = 'http://20.255.58.218:3100/api';
 
 export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [userRole, setUserRole] = useState(null);
-    const [beasiswaList, setBeasiswaList] = useState([
-        {
-            id: 1,
-            nama: "Beasiswa SmartPath",
-            jenjang: "S1",
-            deadline: "2025-12-31",
-            deskripsi: "Beasiswa SmartPath adalah program beasiswa yang ditujukan untuk mahasiswa berprestasi yang memiliki potensi untuk menjadi pemimpin masa depan. Program ini menyediakan dukungan penuh untuk pendidikan tinggi.",
-            syarat: [
-                "IPK minimal 3.0",
-                "Aktif dalam organisasi kemahasiswaan",
-                "Surat rekomendasi dari dosen",
-                "Essay motivasi",
-                "Tidak sedang menerima beasiswa lain"
-            ],
-            benefit: [
-                "Biaya kuliah penuh selama 4 tahun",
-                "Uang saku bulanan Rp 2.000.000",
-                "Laptop dan peralatan study",
-                "Program mentoring",
-                "Kesempatan magang di perusahaan partner"
-            ],
-            dokumen: [
-                "Fotokopi KTP",
-                "Transkrip nilai terbaru",
-                "Surat keterangan tidak mampu",
-                "Essay motivasi (max 500 kata)",
-                "Surat rekomendasi dari dosen"
-            ]
-        },
-        {
-            id: 2,
-            nama: "Beasiswa Global Leader",
-            jenjang: "S2",
-            deadline: "2025-11-15",
-            deskripsi: "Program untuk mahasiswa pascasarjana yang ingin berkontribusi pada isu global.",
-            syarat: ["IPK min 3.5", "TOEFL min 550"],
-            benefit: ["Biaya kuliah penuh", "Tunjangan hidup"],
-            dokumen: ["CV", "Paspor"]
-        },
-        {
-            id: 3,
-            nama: "Beasiswa Teknologi Maju",
-            jenjang: "D3",
-            deadline: "2025-10-01",
-            deskripsi: "Beasiswa untuk siswa/mahasiswa di bidang teknologi informasi dan rekayasa.",
-            syarat: ["Lulusan SMA/SMK", "Minat di bidang teknologi"],
-            benefit: ["Biaya pendidikan", "Kesempatan kerja"],
-            dokumen: ["Ijazah", "Portofolio"]
-        }
-    ]);
 
+    const [beasiswaList, setBeasiswaList] = useState([]);
     const [bookmarkedScholarshipIds, setBookmarkedScholarshipIds] = useState(() => {
         try {
-            const storedBookmarks = localStorage.getItem('bookmarkedScholarshipIds');
-            return storedBookmarks ? JSON.parse(storedBookmarks) : [];
-        } catch (error) {
-            console.error("Failed to read bookmarks from localStorage:", error);
+            const stored = localStorage.getItem('bookmarkedScholarshipIds');
+            return stored ? JSON.parse(stored) : [];
+        } catch (err) {
+            console.error("Bookmark load failed:", err);
             return [];
         }
     });
 
-    // Gunakan useEffect untuk menyimpan bookmark ke Local Storage setiap kali berubah
+    // Login
+    const login = async (email, password) => {
+        try {
+            const res = await axios.post(`${API_BASE_URL}/auth/login`, { email, password });
+            const token = res.data.token;
+            if (token) {
+                const decoded = jwtDecode(token);
+                setIsAuthenticated(true);
+                setUserRole(decoded.role);
+                localStorage.setItem('token', token);
+                return true;
+            }
+            return false;
+        } catch (err) {
+            console.error("LOGIN ERROR:", err.response?.data || err.message);
+            Swal.fire('Login Gagal', err.response?.data?.message || 'Email atau password salah', 'error');
+            return false;
+        }
+    };
+
+    // Register
+    const register = async (email, password) => {
+        try {
+            const res = await axios.post(`${API_BASE_URL}/auth/register`, { email, password });
+            if (res.data && res.data.user) {
+                Swal.fire('Registrasi Berhasil', 'Silakan login', 'success');
+                return true;
+            } else {
+                throw new Error("Registrasi gagal");
+            }
+        } catch (err) {
+            console.error("REGISTER ERROR:", err.response?.data || err.message);
+            Swal.fire('Registrasi Gagal', err.response?.data?.message || 'Terjadi kesalahan', 'error');
+            return false;
+        }
+    };
+
+    // Logout
+    const logout = () => {
+        setIsAuthenticated(false);
+        setUserRole(null);
+        localStorage.removeItem('token');
+    };
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            try {
+                const decoded = jwtDecode(token);
+                setIsAuthenticated(true);
+                setUserRole(decoded.role);
+            } catch (err) {
+                console.error("Token tidak valid:", err);
+            }
+        }
+    }, []);
+
     useEffect(() => {
         try {
             localStorage.setItem('bookmarkedScholarshipIds', JSON.stringify(bookmarkedScholarshipIds));
@@ -80,71 +86,110 @@ export const AuthProvider = ({ children }) => {
         }
     }, [bookmarkedScholarshipIds]);
 
-
-    const users = [
-        { email: 'fajar.saputra2907@gmail.com', password: 'aaaa', role: 'admin' },
-        { email: 'halo@admin.com', password: 'adminpassword', role: 'admin' },
-        { email: 'rahmat.fajar2907@gmail.com', password: 'aaaa', role: 'user' },
-        { email: 'halo@user.com', password: 'userpassword', role: 'user' },
-    ];
-
-    const [usersState, setUsersState] = useState(users);
-
-    const deleteUser = (email) => {
-        setUsersState(prev => prev.filter(user => user.email !== email));
+    const getAuthHeader = () => {
+        const token = localStorage.getItem('token');
+        return token ? { Authorization: `Bearer ${token}` } : {};
     };
 
-    const login = (email, password) => {
-        const foundUser = users.find(user => user.email === email && user.password === password);
-        if (foundUser) {
-            setIsAuthenticated(true);
-            setUserRole(foundUser.role);
-            console.log(`User logged in as: ${foundUser.role}`);
+    // Ambil data beasiswa
+    useEffect(() => {
+        const fetchBeasiswa = async () => {
+            try {
+                const res = await axios.get(`${API_BASE_URL}/scholarships`);
+                setBeasiswaList(Array.isArray(res.data) ? res.data : []);
+            } catch (err) {
+                console.error("Gagal fetch beasiswa:", err);
+            }
+        };
+        if (isAuthenticated) {
+            fetchBeasiswa();
+        }
+    }, [isAuthenticated]);
+
+    // Tambah beasiswa
+    const addBeasiswa = async (newBeasiswa) => {
+        try {
+            const res = await axios.post(`${API_BASE_URL}/scholarships`, newBeasiswa, { headers: getAuthHeader() });
+            setBeasiswaList((prevList) => [...prevList, res.data]);
             return true;
-        } else {
-            console.log('Login failed: Invalid email or password');
+        } catch (err) {
+            console.error("Gagal tambah beasiswa:", err);
             return false;
         }
-    }
-
-    const logout = () => {
-        setIsAuthenticated(false);
-        setUserRole(null);
-        console.log('user logged out');
-    }
-
-    const addBeasiswa = (newBeasiswa) => {
-        setBeasiswaList((prevList) => [
-            ...prevList,
-            { ...newBeasiswa, id: prevList.length > 0 ? Math.max(...prevList.map(b => b.id)) + 1 : 1 }
-        ]);
     };
 
-    const editBeasiswa = (updatedBeasiswa) => {
-        setBeasiswaList((prevList) =>
-            prevList.map((beasiswa) =>
-                beasiswa.id === updatedBeasiswa.id ? updatedBeasiswa : beasiswa
-            )
-        );
+    // Edit beasiswa
+    const editBeasiswa = async (updatedBeasiswa) => {
+        try {
+            const res = await axios.put(
+                `${API_BASE_URL}/scholarships/${updatedBeasiswa.id}`,
+                updatedBeasiswa,
+                { headers: getAuthHeader() }
+            );
+            setBeasiswaList((prevList) =>
+                prevList.map((b) => (b.id === updatedBeasiswa.id ? res.data : b))
+            );
+            return true;
+        } catch (err) {
+            console.error("Gagal edit beasiswa:", err);
+            return false;
+        }
     };
 
-    const deleteBeasiswa = (id) => {
-        setBeasiswaList((prevList) => prevList.filter((beasiswa) => beasiswa.id !== id));
-        // Juga hapus dari bookmark jika beasiswa yang dihapus sedang di-bookmark
-        setBookmarkedScholarshipIds((prevIds) => prevIds.filter((bookmarkId) => bookmarkId !== id));
+    // Delete beasiswa
+    const deleteBeasiswa = async (id) => {
+        try {
+            await axios.delete(`${API_BASE_URL}/scholarships/${id}`, { headers: getAuthHeader() });
+            setBeasiswaList((prevList) => prevList.filter((b) => b.id !== id));
+            setBookmarkedScholarshipIds((prevIds) => prevIds.filter((bookmarkId) => bookmarkId !== id));
+            return true;
+        } catch (err) {
+            console.error("Gagal hapus beasiswa:", err);
+            return false;
+        }
     };
 
-    // Fungsi untuk menambah/menghapus bookmark
-    const toggleBookmark = (beasiswaId) => {
-        setBookmarkedScholarshipIds((prevIds) => {
-            if (prevIds.includes(beasiswaId)) {
-                // Jika sudah di-bookmark, hapus
-                return prevIds.filter((id) => id !== beasiswaId);
-            } else {
-                // Jika belum di-bookmark, tambahkan
-                return [...prevIds, beasiswaId];
+    const [users, setUsers] = useState([]);
+
+    // Ambil data user
+    useEffect(() => {
+        const fetchUsers = async () => {
+            try {
+                const res = await axios.get(
+                    `${API_BASE_URL}/users`,
+                    { headers: getAuthHeader() }
+                );
+                setUsers(Array.isArray(res.data) ? res.data : []);
+            } catch (err) {
+                console.error("Gagal fetch users:", err);
             }
-        });
+        };
+        if (isAuthenticated && userRole === 'admin') {
+            fetchUsers();
+        }
+    }, [isAuthenticated, userRole]);
+
+    // Hapus user di backend
+    const deleteUser = async (email) => {
+        try {
+            await axios.delete(
+                `${API_BASE_URL}/users/${email}`,
+                { headers: getAuthHeader() }
+            );
+            setUsers((prev) => prev.filter((u) => u.email !== email));
+            return true;
+        } catch (err) {
+            console.error("Gagal hapus user:", err);
+            return false;
+        }
+    };
+
+    const toggleBookmark = (beasiswaId) => {
+        setBookmarkedScholarshipIds((prevIds) =>
+            prevIds.includes(beasiswaId)
+                ? prevIds.filter((id) => id !== beasiswaId)
+                : [...prevIds, beasiswaId]
+        );
     };
 
     return (
@@ -153,20 +198,19 @@ export const AuthProvider = ({ children }) => {
             userRole,
             login,
             logout,
+            register,
             beasiswaList,
             addBeasiswa,
             editBeasiswa,
             deleteBeasiswa,
             bookmarkedScholarshipIds,
-            toggleBookmark,
-            users: usersState,
+            users,
             deleteUser,
+            toggleBookmark
         }}>
             {children}
         </AuthContext.Provider>
-    )
-}
+    );
+};
 
-export const useAuth = () => {
-    return useContext(AuthContext);
-}
+export const useAuth = () => useContext(AuthContext);

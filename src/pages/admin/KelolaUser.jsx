@@ -6,7 +6,7 @@ import PageTransition from '../../components/PageTransition'
 function KelolaUser() {
     const { users, deleteUser } = useAuth();
 
-    const handleDelete = (email) => {
+    const handleDelete = async (email) => {
         Swal.fire({
             title: 'Yakin ingin menghapus?',
             text: `User dengan email "${email}" akan dihapus permanen.`,
@@ -16,10 +16,14 @@ function KelolaUser() {
             cancelButtonColor: '#aaa',
             confirmButtonText: 'Ya, hapus',
             cancelButtonText: 'Batal',
-        }).then((result) => {
+        }).then(async (result) => {
             if (result.isConfirmed) {
-                deleteUser(email);
-                Swal.fire('Dihapus!', 'User berhasil dihapus.', 'success');
+                const success = await deleteUser(email);
+                if (success) {
+                    Swal.fire('Dihapus!', 'User berhasil dihapus.', 'success');
+                } else {
+                    Swal.fire('Gagal!', 'User gagal dihapus.', 'error');
+                }
             }
         });
     };

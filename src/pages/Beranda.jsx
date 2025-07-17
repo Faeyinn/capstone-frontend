@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom'
+import PageTransition from '../components/PageTransition'
 
 function Beranda() {
   return (
-    <div>
+    <PageTransition>
       <div
         className="hero min-h-screen bg-base-100"
         style={{
@@ -14,14 +15,14 @@ function Beranda() {
         <div className="hero-content text-neutral-content text-center">
           <div className="max-w-md">
             <h1 className="mb-5 text-5xl font-bold">Selamat Datang di ScholarMatch <br /> </h1>
-            <p className="mb-5">
+            <p className="mb-5 font-semibold">
               ScholarMatch adalah paltform untuk mencari beasiswa yang mudah dan cepat. ScholarMatch membantu kamu menemukan beasiswa yang sesuai dengan kebutuhanmu.
             </p>
             <Link to="/login" className="btn btn-primary">Get Started</Link>
           </div>
         </div>
       </div>
-    </div>
+    </PageTransition>
   );
 }
 

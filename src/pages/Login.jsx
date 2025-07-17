@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'; // Import useEffect
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import Swal from 'sweetalert2';
+import PageTransition from '../components/PageTransition'
 
 function Login() {
     const [email, setEmail] = useState('');
@@ -38,7 +39,7 @@ function Login() {
     };
 
     return (
-        <div>
+        <PageTransition>
             <div className="hero min-h-screen">
                 <div className="hero-content text-neutral-content">
                     <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-white">
@@ -94,7 +95,7 @@ function Login() {
                     </div>
                 </div>
             </div>
-        </div>
+        </PageTransition>
     );
 }
 

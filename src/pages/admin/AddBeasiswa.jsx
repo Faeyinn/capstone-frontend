@@ -2,7 +2,8 @@
 import { useNavigate, Link } from 'react-router-dom';
 import { useState } from 'react';
 import Swal from 'sweetalert2';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
+import PageTransition from '../../components/PageTransition'
 
 function AddBeasiswa() {
     const navigate = useNavigate();
@@ -11,13 +12,13 @@ function AddBeasiswa() {
     // State untuk form tambah beasiswa
     const [newBeasiswa, setNewBeasiswa] = useState({
         nama: "",
-        penyedia: "", // Jika ada penyedia
+        penyedia: "",
         jenjang: "",
         deadline: "",
         deskripsi: "",
-        syarat: "", // Ubah ke string untuk input form
-        benefit: "", // Ubah ke string untuk input form
-        dokumen: "" // Ubah ke string untuk input form
+        syarat: "",
+        benefit: "",
+        dokumen: ""
     });
 
     const handleInputChange = (e) => {
@@ -31,7 +32,7 @@ function AddBeasiswa() {
     const handleSubmit = (e) => {
         e.preventDefault();
         const beasiswaToAdd = {
-            id: Date.now(), // Menggunakan timestamp sebagai ID unik sederhana
+            id: Date.now(),
             nama: newBeasiswa.nama,
             penyedia: newBeasiswa.penyedia,
             jenjang: newBeasiswa.jenjang,
@@ -62,14 +63,18 @@ function AddBeasiswa() {
         });
     };
 
+    const handleBack = () => {
+        navigate(-1);
+    };
+
     return (
-        <div>
+        <PageTransition>
             <div className="hero min-h-screen">
                 <div className="hero-content text-neutral-content">
                     <div className="max-w-4xl mx-auto p-6">
                         <h1 className="mt-8 mb-8 text-5xl text-center text-primary font-bold">Tambah Beasiswa Baru</h1>
                         <div className="bg-primary rounded-lg shadow-lg p-8">
-                            <Link to="/beranda-admin" className="btn btn-accent mb-4">Back</Link>
+                            <button onClick={handleBack} className="btn btn-accent mb-4">Back</button>
                             <fieldset className="fieldset bg-white shadow-xl rounded-box w-full max-w-lg border p-4">
                                 <h2 className="text-xl text-black font-bold mb-4 text-center">Isi Detail Beasiswa</h2>
                                 <form onSubmit={handleSubmit}>
@@ -98,14 +103,14 @@ function AddBeasiswa() {
                                     <textarea name="benefit" className="textarea bg-white text-black border-gray-400 w-full" placeholder="Benefit 1, Benefit 2, ..." value={newBeasiswa.benefit} onChange={handleInputChange} required></textarea>
 
                                     <button type="submit" className="btn btn-success mt-4 w-full">Tambah Beasiswa</button>
-                                    <button type="button" onClick={() => navigate('/beranda-admin')} className="btn mt-2 w-full">Batal</button>
+                                    <button type="button" onClick={handleBack} className="btn mt-2 w-full">Batal</button>
                                 </form>
                             </fieldset>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </PageTransition>
     );
 }
 

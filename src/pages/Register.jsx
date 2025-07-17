@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react'; // Import useEffect
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext'; // Import useAuth
+import { useAuth } from '../context/AuthContext';
 import Swal from 'sweetalert2';
+import PageTransition from '../components/PageTransition'
 
 function Register() {
     const [email, setEmail] = useState('');
@@ -9,17 +10,17 @@ function Register() {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
-    const { isAuthenticated, userRole } = useAuth(); // Ambil isAuthenticated dan userRole
+    const { isAuthenticated, userRole } = useAuth(); 
 
     useEffect(() => {
-        if (isAuthenticated) { // Jika sudah terautentikasi
+        if (isAuthenticated) { 
             if (userRole === 'admin') {
-                navigate('/beranda-admin', { replace: true }); // Redirect ke admin, replace history
+                navigate('/beranda-admin', { replace: true }); 
             } else if (userRole === 'user') {
-                navigate('/list-beasiswa', { replace: true }); // Redirect ke list beasiswa, replace history
+                navigate('/list-beasiswa', { replace: true }); 
             }
         }
-    }, [isAuthenticated, userRole, navigate]); // Dependensi useEffect
+    }, [isAuthenticated, userRole, navigate]); 
 
     const handleRegister = (e) => {
         e.preventDefault();
@@ -39,7 +40,7 @@ function Register() {
     };
 
     return (
-        <div>
+        <PageTransition>
             <div className="hero min-h-screen">
                 <div className="hero-content text-neutral-content">
                     <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-white">
@@ -96,7 +97,7 @@ function Register() {
                     </div>
                 </div>
             </div>
-        </div>
+        </PageTransition>
     );
 }
 

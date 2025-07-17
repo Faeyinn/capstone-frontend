@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
+import PageTransition from '../../components/PageTransition'
 
 function ListBeasiswa() {
     const { beasiswaList, bookmarkedScholarshipIds, toggleBookmark } = useAuth();
 
     return (
-        <div>
+        <PageTransition>
             <div className="hero min-h-screen">
                 <div className="hero-content text-neutral-content w-full">
                     <div className="w-full mx-auto p-6">
@@ -43,7 +44,7 @@ function ListBeasiswa() {
                     </div>
                 </div>
             </div>
-        </div>
+        </PageTransition>
     );
 }
 

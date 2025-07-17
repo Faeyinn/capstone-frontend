@@ -1,7 +1,8 @@
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
+import PageTransition from '../../components/PageTransition'
 
 function EditBeasiswa() {
     const { id } = useParams();
@@ -34,7 +35,6 @@ function EditBeasiswa() {
                 dokumen: beasiswa.dokumen.join(', ')
             });
         } else {
-            // Jika beasiswa tidak ditemukan (misalnya, ID di URL salah), kembali ke halaman admin
             Swal.fire({
                 icon: 'error',
                 title: 'Beasiswa tidak ditemukan!',
@@ -53,7 +53,7 @@ function EditBeasiswa() {
     };
 
     const handleSaveEdit = (e) => {
-        e.preventDefault(); // Mencegah refresh halaman
+        e.preventDefault();
         const updatedBeasiswa = {
             id: editFormData.id,
             nama: editFormData.nama,
@@ -71,30 +71,34 @@ function EditBeasiswa() {
             text: "Beasiswa berhasil diupdate!",
             icon: "success"
         }).then(() => {
-            navigate('/beranda-admin'); // Kembali ke halaman beranda admin setelah berhasil
+            navigate('/beranda-admin');
         });
     };
 
+    const handleBack = () => {
+        navigate(-1)
+    }
+
     if (!beasiswa) {
         return (
-            <div>
+            <PageTransition>
                 <div className="flex justify-center items-center min-h-screen">
                     <span className="loading loading-spinner loading-lg text-primary"></span>
                     <p className="text-xl text-gray-700 ml-4">Memuat data beasiswa...</p>
                 </div>
-            </div>
+            </PageTransition>
         );
     }
 
     return (
-        <div>
+        <PageTransition>
             <div className="hero min-h-screen">
                 <div className="hero-content text-neutral-content">
                     <div className="max-w-4xl mx-auto p-6">
                         <h1 className="mt-8 mb-8 text-5xl text-center text-primary font-bold">Edit Beasiswa: {beasiswa.nama}</h1>
                         <div className="flex flex-col items-center justify-center bg-primary rounded-lg p-8 shadow-lg">
                             <div className='w-full ml-25'>
-                                <Link to="/beranda-admin" className="btn btn-accent m-4">Back</Link>
+                                <button onClick={handleBack} className="btn btn-accent m-4">Back</button>
                             </div>
                             <fieldset className="fieldset bg-white shadow-xl rounded-box w-full max-w-lg border p-4">
                                 <h2 className="text-xl text-black font-bold mb-4 text-center">Formulir Edit</h2>
@@ -121,14 +125,14 @@ function EditBeasiswa() {
                                     <textarea name="benefit" className="textarea bg-white text-black border-gray-400 w-full" placeholder="Benefit 1, Benefit 2, ..." value={editFormData.benefit} onChange={handleEditFormChange} required></textarea>
 
                                     <button type="submit" className="btn btn-success mt-4 w-full">Simpan Perubahan</button>
-                                    <button type="button" onClick={() => navigate('/beranda-admin')} className="btn mt-2 w-full">Batal</button>
+                                    <button type="button" onClick={handleBack} className="btn mt-2 w-full">Batal</button>
                                 </form>
                             </fieldset>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </PageTransition>
     );
 }
 
